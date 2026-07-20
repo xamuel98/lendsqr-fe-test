@@ -7,5 +7,5 @@ export {
   useUserAccountStatus,
   useUserStatusAction,
   UserStatusActionContext
-} from "./model";
-export type { UserStatusAction, UserStatusActionSubject } from "./model";
+} from "./actions";
+export type { UserStatusAction, UserStatusActionSubject } from "./actions";
