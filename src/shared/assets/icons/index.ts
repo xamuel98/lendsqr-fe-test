@@ -1,6 +1,7 @@
 export { default as IBadgePercent } from "./badge-percent.svg?react";
 export { default as IBank } from "./bank.svg?react";
 export { default as IBriefcase } from "./briefcase 1.svg?react";
+export { default as ICalendar } from "./calendar.svg?react";
 export { default as IChartBar } from "./chart-bar.svg?react";
 export { default as IChevronDown } from "./chevron-down.svg?react";
 export { default as IChevronLeft } from "./chevron-left.svg?react";
