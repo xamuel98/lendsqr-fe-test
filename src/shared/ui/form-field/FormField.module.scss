@@ -53,6 +53,10 @@
   .control[data-disabled="false"]:not(:focus-within):hover {
     border-color: var(--color-border-strong);
   }
+
+  .control[data-disabled="false"][data-invalid="true"]:hover {
+    border-color: var(--color-status-danger);
+  }
 }
 
 .control:focus-within {
@@ -65,6 +69,7 @@
 }
 
 .control[data-invalid="true"]:focus-within {
+  border-color: var(--color-status-danger);
   box-shadow: 0 0 0 var(--focus-ring-width)
     color-mix(in srgb, var(--color-status-danger) 28%, transparent);
 }
