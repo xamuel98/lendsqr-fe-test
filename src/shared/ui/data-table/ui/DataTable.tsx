@@ -127,18 +127,23 @@ export function DataTable<TRecord>({
 
     syncViewportState();
 
-    if ("ResizeObserver" in window) {
-      const resizeObserver = new ResizeObserver(syncViewportState);
-      resizeObserver.observe(viewport);
+    const ResizeObserverConstructor = (
+      globalThis as unknown as {
+        ResizeObserver?: typeof ResizeObserver;
+      }
+    ).ResizeObserver;
+    const resizeObserver = ResizeObserverConstructor
+      ? new ResizeObserverConstructor(syncViewportState)
+      : undefined;
 
-      return () => {
-        resizeObserver.disconnect();
-      };
+    if (resizeObserver) {
+      resizeObserver.observe(viewport);
     }
 
     window.addEventListener("resize", syncViewportState);
 
     return () => {
+      resizeObserver?.disconnect();
       window.removeEventListener("resize", syncViewportState);
     };
   }, [syncViewportState]);
