@@ -28,7 +28,7 @@ const usersResponse = {
       username: "adedeji001"
     }
   ],
-  limit: 100,
+  limit: 10,
   page: 1,
   total: 1
 };

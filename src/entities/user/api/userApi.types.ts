@@ -2,6 +2,7 @@ import type { UserStatus } from "../model/user.types";
 import type { User, UserDetails, UserStat } from "../model";
 
 export const userPageSizes = [10, 25, 50, 100] as const;
+export const defaultUserPageSize = 10 satisfies UserPageSize;
 
 export type UserPageSize = (typeof userPageSizes)[number];
 
@@ -73,5 +74,5 @@ export function normaliseUserFilters(filters: UserFilters = {}): UserFilters {
 export function normaliseUserPageSize(value: number): UserPageSize {
   return userPageSizes.includes(value as UserPageSize)
     ? (value as UserPageSize)
-    : 100;
+    : defaultUserPageSize;
 }
