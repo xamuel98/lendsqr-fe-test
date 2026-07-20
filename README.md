@@ -1,124 +1,162 @@
 # Lendsqr Frontend Assessment
 
-## Project purpose
+This is my implementation of the Lendsqr frontend assessment. I built it as a
+small production-style dashboard instead of a one-page mockup, so the project
+has reusable UI primitives, a typed data layer, protected routing, responsive
+layout behavior, and realistic loading, empty, error, and action states.
 
-This repository contains the scaffold for a Lendsqr frontend assessment built with
-React, TypeScript, Vite, React Router, TanStack Query, and SCSS Modules.
+## What I Built
 
-## Current phase
+The core experience includes:
 
-This is the scaffolding phase only.
+- A responsive login page based on the supplied Figma design.
+- Demo authentication with a persisted local session.
+- An authenticated dashboard shell with top navigation, sidebar, command search,
+  organization switching, notification dropdown, and user menu.
+- A users list page with stat cards, filters, pagination, row actions, and
+  responsive table behavior.
+- A user details page with query-param driven tabs.
+- Activate and blacklist user flows with a shared confirmation modal.
+- Shared empty, error, loading, retry, toast, dropdown, button, form, and table
+  components.
 
-Included now:
+I also kept the project aligned with Feature-Sliced Design so reusable code does
+not live inside page-specific folders.
 
-- Project configuration
-- Feature-Sliced Design boundaries
-- Tokenized SCSS architecture
-- Provider setup
-- Routing placeholders
-- Minimal smoke tests
+## Demo Login
 
-Not included yet:
+Use these credentials to enter the dashboard:
 
-- Final page designs
-- Real authentication
-- API integration
-- Dashboard data
-- Users table behavior
-- User details data flow
+```text
+Email: demo@lendsqr.com
+Password: password123
+```
 
-## Technology stack
+On login, I store a demo session in localStorage. That lets protected pages work
+without needing `?mockAuth=1` in the URL. Logging out clears localStorage.
 
-- React
+## Tech Stack
+
+- React 19
 - TypeScript
 - Vite
 - React Router
 - TanStack Query
+- React Hook Form
+- Zod
 - SCSS Modules
 - Vitest
 - React Testing Library
 - ESLint
 - Prettier
 
-## Installation
+## Getting Started
+
+Install dependencies:
 
 ```bash
 npm install
-npm run dev
 ```
 
-## Mockaroo API configuration
-
-The Users table and statistics cards use Mockaroo endpoints. Create a local `.env`
-file from `.env.example` and provide the required API key:
+Create a local environment file:
 
 ```bash
 cp .env.example .env
 ```
 
+Add the Mockaroo values:
+
 ```env
 VITE_MOCKAROO_BASE_URL=https://my.api.mockaroo.com
-VITE_MOCKAROO_API_KEY=
+VITE_MOCKAROO_API_KEY=your_mockaroo_key
 ```
 
-The application sends the key in the `X-API-Key` request header. It is never added
-to an endpoint URL, logged, or included in this README. `.env` is ignored by Git.
+Start the app:
 
-The integration uses:
+```bash
+npm run dev
+```
 
-- `GET /users.json` for paginated users
-- `GET /stats.json` for Users statistic cards
+## API Integration
 
-The UI keeps `pageSize` in the browser URL and maps it to Mockaroo's `limit`
-request parameter. Supported page sizes are `10`, `25`, `50`, and `100`.
+I used Mockaroo endpoints for the assessment data and kept the API key in a
+local `.env` file. The key is sent with the `X-API-Key` header.
 
-Supported URL-backed filters are `organization`, `username`, `email`,
-`phoneNumber`, `status`, and `dateJoined`. Applying or resetting filters resets
-the URL page to `1` while preserving `pageSize`.
+The app currently calls:
 
-### Client-side key limitation
+- `GET /users.json` for the paginated users table.
+- `GET /users/:userId.json` for the user details page.
+- `GET /stats.json` for users summary cards.
+- `GET /user/organizations.json` for the organization switcher.
 
-Vite variables prefixed with `VITE_` are embedded in the browser bundle. The local
-environment file prevents accidental source-control commits but does not make this
-API key private. A production application should proxy authenticated data-service
-requests through a backend or serverless function when the key must remain secret.
+The users table supports URL-backed state for pagination and filters. This makes
+the table easier to refresh, share, and reason about.
 
-## Available scripts
+Supported filters:
 
-- `npm run dev` starts the Vite dev server.
-- `npm run build` runs TypeScript project checks and builds the app.
-- `npm run preview` previews the production build.
-- `npm run typecheck` runs strict TypeScript validation.
-- `npm run lint` runs ESLint.
-- `npm run lint:fix` applies safe lint fixes.
-- `npm run test` starts Vitest in watch mode.
-- `npm run test:run` runs the test suite once.
+- `organization`
+- `username`
+- `email`
+- `phoneNumber`
+- `status`
+- `dateJoined`
+
+Supported page sizes:
+
+- `10`
+- `25`
+- `50`
+- `100`
+
+## Important Note About Client API Keys
+
+Vite exposes variables prefixed with `VITE_` to the browser bundle. I kept the
+Mockaroo key out of source control, but this is still a client-side key. In a
+real production app, I would proxy these requests through a backend or serverless
+function so the key is never shipped to the browser.
 
 ## Routes
 
+Public routes:
+
 - `/login`
+
+Protected routes:
+
 - `/dashboard`
 - `/users`
 - `/users/:userId`
-- `*` not-found fallback
+- `/guarantors`
+- `/loans`
+- `/decision-models`
+- `/savings`
+- `/loan-requests`
+- `/whitelist`
+- `/karma`
+- `/organization`
+- `/loan-products`
+- `/savings-products`
+- `/fees-charges`
+- `/transactions`
+- `/services`
+- `/service-account`
+- `/settlements`
+- `/reports`
+- `/preferences`
+- `/fees-pricing`
+- `/audit-logs`
+- `/system-messages`
 
-Temporary scaffold auth:
+The non-users dashboard routes intentionally render placeholder pages for this
+assessment phase, but they still live behind the authenticated layout.
 
-- Public routes render normally.
-- Protected routes currently use the `?mockAuth=1` query parameter.
-- Example: `/dashboard?mockAuth=1`
+## Architecture
 
-This is a deliberate placeholder so we can verify routing and layout composition
-without introducing persistence or business logic yet.
-
-## Folder structure
+I followed Feature-Sliced Design:
 
 ```text
 src/
 ├── app/
-│   ├── providers/
-│   ├── router/
-│   └── styles/
 ├── pages/
 ├── widgets/
 ├── features/
@@ -126,148 +164,202 @@ src/
 └── shared/
 ```
 
-## FSD layer responsibilities
+Layer responsibilities:
 
-- `app`: global composition, routing, providers, and application-wide styles.
-- `pages`: route-level screens composed from lower layers.
-- `widgets`: larger interface compositions such as the authenticated layout.
-- `features`: user-facing business interactions.
-- `entities`: business domain building blocks.
-- `shared`: reusable infrastructure, configuration, and non-business UI primitives.
+- `app`: routing, providers, global styles, and app-level composition.
+- `pages`: route-level screens.
+- `widgets`: larger layout compositions, such as the authenticated dashboard
+  shell and users table.
+- `features`: user-facing interactions, such as user status actions.
+- `entities`: user domain types, API methods, schemas, and model logic.
+- `shared`: reusable UI, assets, config, storage, API client, and utilities.
 
-## FSD dependency rules
+I tried to keep imports flowing downward through the layers. For example, the
+users page can compose widgets and features, but shared UI components do not
+know anything about the users page.
 
-- `app` may import from all lower layers.
-- `pages` may import from widgets, features, entities, and shared.
-- `widgets` may import from features, entities, and shared.
-- `features` may import from entities and shared.
-- `entities` may import from shared.
-- `shared` must not import from higher layers.
-- External consumers should prefer slice public APIs over deep imports.
+## Notable Implementation Details
 
-## Public API conventions
+### Authentication
 
-- Export from a slice `index.ts` when the slice has a meaningful boundary.
-- Keep private implementation details inside the slice.
-- Avoid exporting internal helpers or UI subparts before they are intentionally reusable.
+The login form validates with Zod and React Hook Form. A successful demo login
+creates a local session with the default organization set to `Lendsqr`.
 
-## Authenticated layout
+### Organization Gating
 
-The protected application frame is represented by one
-`authenticated-layout` widget.
+The authenticated dashboard fetches organizations before rendering the main
+dashboard content. If organizations fail to load, the UI shows a retry state
+instead of rendering users data without organization context.
 
-`Sidebar` and `TopNavigation` are private UI components inside that
-widget because they form part of the same authenticated-page
-composition and are not currently reused independently.
+### Users Table
 
-Only `AuthenticatedLayout` is exposed through the widget's public API.
-This keeps the public boundary small while allowing the internal
-components to maintain their own files and SCSS Modules.
+The table is record-agnostic. The users page owns the user-specific columns and
+filter configuration, while the shared data table handles:
 
-## Why Sidebar and TopNavigation are internal
+- horizontal scrolling
+- pagination
+- filter trigger state
+- loading skeletons
+- empty states
+- search-empty states
+- error states
+- retry actions
+- row actions
 
-- They belong to one composition boundary.
-- They share layout concerns with the protected shell.
-- Exporting only `AuthenticatedLayout` prevents premature public APIs.
-- Future mobile navigation behavior can evolve inside the widget without breaking consumers.
+The table keeps empty and error states centered in the visible scroll viewport
+even when the table has a larger `min-width`.
 
-## SCSS architecture
+### User Actions
 
-The style system follows this progression:
+Activate and blacklist actions are centralized in an app provider. This keeps the
+users list and user details page in sync and allows both places to reuse the
+same confirmation dialog, loading behavior, toast messages, and localStorage
+status updates.
+
+### User Details Tabs
+
+The user details page uses a query parameter for tabs, so the selected tab is
+shareable and survives refreshes.
+
+Example:
 
 ```text
-Primitive tokens → Semantic tokens → Themes → Component styles
+/users/user-0004?tab=documents
 ```
 
-- `tokens/primitives`: raw scales such as colors, spacing, radii, motion, and z-index.
-- `tokens/semantic`: CSS custom properties named by purpose.
-- `themes`: emitted theme variable mappings.
-- `base`: reset, document defaults, focus styles, and typography.
-- `utilities`: a very small global utility layer.
-- `abstracts`: Sass-only tools such as functions, mixins, and placeholders.
+Inactive tabs currently show reusable empty states.
 
-## Primitive versus semantic tokens
+### Design System
 
-- Primitive tokens describe what a value is.
-  Example: a raw blue or a raw spacing step.
-- Semantic tokens describe why a value exists.
-  Example: `--color-bg-surface-secondary` or `--space-card`.
+The project uses local fonts, SCSS modules, primitive tokens, semantic CSS custom
+properties, and reusable components. I kept Figma-specific values tokenized where
+they were reusable and avoided hardcoding component styles where a shared token
+made more sense.
 
-Component styles should prefer semantic custom properties instead of reaching for
-raw primitive values directly.
+Shared UI includes:
 
-## SCSS functions and mixins
+- `Button`
+- `FormField`
+- `DynamicForm`
+- `DataTable`
+- `DropdownMenu`
+- `DialogPortal`
+- `ConfirmationDialog`
+- `EmptyState`
+- `StatusBadge`
+- `StatCard`
+- `Toast`
+- `SearchCommandDialog`
 
-Implemented Sass helpers include:
+## Styling
 
-- `rem()`
-- `fluid-size()`
-- `get-breakpoint()`
-- `z-index()`
-- `respond-to`
-- `focus-ring`
-- `visually-hidden`
-- `truncate`
-- `line-clamp`
-- `flex-center`
-- `container`
-- `minimum-touch-target`
-- `reduced-motion`
+The SCSS architecture is:
 
-Vite injects only the abstract Sass tools into SCSS files:
-
-```scss
-@use "@styles/abstracts" as *;
+```text
+Primitive tokens -> Semantic tokens -> Theme variables -> Component modules
 ```
 
-CSS-producing files are not injected globally, so resets, themes, and utilities are
-emitted only once from `src/app/styles/index.scss`.
+Primitive tokens hold raw scales like colors, spacing, radii, shadows, sizes, and
+motion. Semantic tokens describe how those values are used in the UI.
 
-## Adding a new page
+I used SCSS Modules for component styling and kept global styles limited to
+reset, typography, theme variables, and small utilities.
 
-1. Create a new slice under `src/pages/<page-name>/`.
-2. Add the route component in `ui/`.
-3. Add a local SCSS Module.
-4. Export the page from the slice `index.ts`.
-5. Register it in `src/app/router/AppRouter.tsx`.
+## Accessibility
 
-## Adding a new feature
+I added accessibility behavior across the main interactive surfaces:
 
-1. Create a slice under `src/features/<feature-name>/`.
-2. Keep business interaction logic inside that slice.
-3. Import only from `entities` and `shared`.
-4. Add a public API only when the feature has something meaningful to expose.
+- form labels and accessible names
+- field-level validation messages
+- `aria-invalid` and error associations
+- keyboard-operable password toggle
+- semantic buttons for icon actions
+- focus-visible states
+- alert/status regions for empty and error states
+- accessible dropdowns and dialogs
+- body scroll lock for mobile sidebar/dialog states
+- reduced-motion handling for motion-heavy components
 
-## Adding a new entity
+## Responsive Behavior
 
-1. Create or extend the entity slice under `src/entities/`.
-2. Keep domain types, helpers, and UI close to the entity.
-3. Import only from `shared`.
+The dashboard adapts across mobile, tablet, laptop, and desktop widths:
 
-## Adding a new widget
+- The top navigation simplifies below desktop sizes.
+- The sidebar becomes an overlay navigation below the desktop breakpoint.
+- The login layout stacks cleanly on smaller screens.
+- The command palette uses a constrained, scrollable dialog.
+- The data table keeps its horizontal scroll without breaking the page layout.
+- Pagination stacks and centers on smaller screens.
+- User details content reflows so long values have room to breathe.
 
-1. Create the widget slice under `src/widgets/`.
-2. Compose lower-layer pieces there.
-3. Export only the widget boundary from its `index.ts`.
+## Available Scripts
 
-## Adding a new SCSS token
+```bash
+npm run dev
+```
 
-1. Add the raw value to the appropriate primitive scale if needed.
-2. Map it to a semantic token in `tokens/semantic`.
-3. Emit it through the theme layer.
-4. Consume the semantic custom property in component styles.
+Starts the Vite dev server.
 
-## What remains to be implemented
+```bash
+npm run build
+```
 
-- Final Figma-based UI
-- Real login flow
-- Validation and form behavior
-- API client implementation
-- Mock or live datasets
-- Dashboard statistics
-- Users table
-- Filtering, searching, sorting, and pagination
-- User details feature logic
-- Persistence layers
-- Production-ready loading, empty, and error states
-- Final responsive mobile navigation behavior
+Runs TypeScript project checks and creates the production build.
+
+```bash
+npm run preview
+```
+
+Previews the production build locally.
+
+```bash
+npm run typecheck
+```
+
+Runs TypeScript validation without emitting files.
+
+```bash
+npm run lint
+```
+
+Runs ESLint.
+
+```bash
+npm run lint:fix
+```
+
+Runs ESLint with safe automatic fixes.
+
+```bash
+npm run test
+```
+
+Starts Vitest in watch mode.
+
+```bash
+npm run test:run
+```
+
+Runs the test suite once.
+
+## Verification
+
+These are the commands I use to check the project before handing it off:
+
+```bash
+npm run lint
+npm run typecheck
+npm run test:run
+npm run build
+```
+
+## What I Would Improve Next
+
+If I were continuing beyond this assessment, I would:
+
+- Replace the client-side Mockaroo key with a backend proxy.
+- Add real authentication and refresh-token handling.
+- Add server-backed activate/blacklist mutations.
+- Add real content for the placeholder dashboard sections.
+- Add sorting support to the reusable data table.
+- Add end-to-end tests for the login, users list, and user details flows.
