@@ -75,6 +75,19 @@ describe("LoginPage", () => {
     });
   });
 
+  it("normalizes email before validating and submitting", async () => {
+    const user = userEvent.setup();
+
+    renderLoginPage();
+
+    await user.type(screen.getByRole("textbox", { name: "Email" }), "  Demo@Lendsqr.COM  ");
+    await user.type(screen.getByPlaceholderText("Password"), "password123");
+    await user.click(screen.getByRole("button", { name: "LOG IN" }));
+
+    expect(await screen.findByRole("heading", { name: "Users" })).toBeInTheDocument();
+    expect(getDemoAuthSession()?.email).toBe("demo@lendsqr.com");
+  });
+
   it("displays invalid-credentials and generic request errors", async () => {
     const user = userEvent.setup();
 
