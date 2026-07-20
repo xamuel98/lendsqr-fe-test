@@ -1,0 +1,431 @@
+@use "sass:map";
+@use "@styles/abstracts/media";
+@use "@styles/tokens/primitives/colors";
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+@use "@styles/tokens/primitives/z-index";
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: map.get(z-index.$z-indexes, modal);
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  padding: map.get(spacing.$spaces, 4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.root[data-state="opening"],
+.root[data-state="open"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.root[data-state="closing"] {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: map.get(colors.$neutral, 15);
+  cursor: default;
+  opacity: 0;
+  transition: opacity var(--duration-hover) var(--ease-hover);
+}
+
+.dialog {
+  --search-dialog-surface: #{colors.$white};
+  --search-dialog-text: #{map.get(colors.$secondary, 100)};
+  --search-dialog-muted: #{map.get(colors.$neutral, 70)};
+  --search-dialog-placeholder: #{map.get(colors.$neutral, 60)};
+  --search-dialog-border: #{map.get(colors.$secondary, 10)};
+  --search-dialog-row-active: #{map.get(colors.$primary, 6)};
+
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100%;
+  max-width: 43rem;
+  max-height: min(27rem, calc(100dvh - #{map.get(spacing.$spaces, 8)}));
+  margin-inline: auto;
+  overflow: hidden;
+  border: map.get(sizing.$border-widths, thin) solid var(--search-dialog-border);
+  border-radius: map.get(radii.$radii, lg);
+  background: var(--search-dialog-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--search-dialog-text);
+  transform-origin: top center;
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(map.get(spacing.$spaces, 2)) scale(0.985);
+  will-change: transform, opacity, filter;
+  transition:
+    transform var(--duration-menu) var(--ease-menu),
+    opacity var(--duration-menu) var(--ease-menu),
+    filter var(--duration-hover) var(--ease-hover);
+}
+
+.root[data-state="opening"] .overlay,
+.root[data-state="open"] .overlay {
+  opacity: 1;
+}
+
+.root[data-state="opening"] .dialog,
+.root[data-state="open"] .dialog {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0) scale(1);
+}
+
+.root[data-state="closing"] .overlay {
+  opacity: 0;
+}
+
+.root[data-state="closing"] .dialog {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(map.get(spacing.$spaces, 1)) scale(0.99);
+}
+
+.root[data-motion="instant"] .overlay,
+.root[data-motion="instant"] .dialog {
+  transition: none;
+}
+
+.dialogTitle,
+.dialogDescription,
+.label {
+  @include visually-hidden();
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  min-height: calc(
+    #{map.get(sizing.$sizes, control-xl)} + #{map.get(spacing.$spaces, 3)}
+  );
+  gap: map.get(spacing.$spaces, 3);
+  padding-inline: map.get(spacing.$spaces, 3);
+  border-bottom: map.get(sizing.$border-widths, thin) solid
+    var(--search-dialog-border);
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  min-height: map.get(sizing.$sizes, control-sm);
+  gap: map.get(spacing.$spaces, 1.5);
+  color: var(--search-dialog-muted);
+}
+
+.searchField:focus-within {
+  color: var(--search-dialog-text);
+}
+
+.searchIcon,
+.resultIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.searchIcon {
+  width: map.get(sizing.$sizes, icon-16);
+  height: map.get(sizing.$sizes, icon-16);
+}
+
+.resultIcon {
+  width: map.get(sizing.$sizes, icon-20);
+  height: map.get(sizing.$sizes, icon-20);
+}
+
+.searchIcon svg,
+.resultIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  outline: 0;
+  background: transparent;
+  color: var(--search-dialog-text);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-compact);
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+.input:focus,
+.input:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.input::placeholder {
+  color: var(--search-dialog-placeholder);
+  opacity: 1;
+}
+
+.input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.clearButton {
+  @include minimum-touch-target(map.get(sizing.$sizes, icon-20));
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: map.get(radii.$radii, circle);
+  background: map.get(colors.$secondary, 10);
+  color: map.get(colors.$secondary, 60);
+  cursor: pointer;
+  transition:
+    transform var(--duration-hover) var(--ease-menu),
+    color var(--duration-hover) var(--ease-hover),
+    background-color var(--duration-hover) var(--ease-hover);
+}
+
+.clearButton svg {
+  width: map.get(sizing.$sizes, icon-16);
+  height: map.get(sizing.$sizes, icon-16);
+}
+
+.sections {
+  display: grid;
+  gap: map.get(spacing.$spaces, 4);
+  padding: map.get(spacing.$spaces, 2);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #{map.get(colors.$secondary, 16)} transparent;
+}
+
+.sections::-webkit-scrollbar {
+  width: map.get(spacing.$spaces, 2);
+}
+
+.sections::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sections::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: map.get(radii.$radii, pill);
+  background: color-mix(
+    in srgb,
+    #{map.get(colors.$secondary, 16)} 72%,
+    white
+  );
+  background-clip: padding-box;
+}
+
+.sections::-webkit-scrollbar-thumb:hover {
+  background: color-mix(
+    in srgb,
+    #{map.get(colors.$secondary, 20)} 76%,
+    white
+  );
+  background-clip: padding-box;
+}
+
+.actionSections {
+  display: grid;
+  gap: map.get(spacing.$spaces, 4);
+}
+
+.section {
+  display: grid;
+  gap: map.get(spacing.$spaces, 2);
+}
+
+.contentSection {
+  min-width: 0;
+}
+
+.sectionTitle,
+.emptyState {
+  margin: 0;
+}
+
+.sectionTitle {
+  padding-inline: map.get(spacing.$spaces, 3.5);
+  color: var(--search-dialog-muted);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-compact);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+.results {
+  display: grid;
+  gap: map.get(spacing.$spaces, 1);
+}
+
+.resultButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: map.get(spacing.$spaces, 3);
+  padding: map.get(spacing.$spaces, 2.5) map.get(spacing.$spaces, 3.5);
+  border: map.get(sizing.$border-widths, thin) solid transparent;
+  border-radius: map.get(radii.$radii, lg);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform var(--duration-hover) var(--ease-menu),
+    background-color var(--duration-hover) var(--ease-hover),
+    border-color var(--duration-hover) var(--ease-hover);
+}
+
+.resultButton[data-active="true"] {
+  border-color: map.get(colors.$secondary, 6);
+  background: var(--search-dialog-row-active);
+}
+
+.resultLeading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: map.get(spacing.$spaces, 2.5);
+}
+
+.resultIcon {
+  color: map.get(colors.$secondary, 60);
+}
+
+.resultTitle,
+.resultMeta {
+  margin: 0;
+}
+
+.resultTitle {
+  @include truncate();
+
+  color: var(--search-dialog-text);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-compact);
+}
+
+.resultTitle strong {
+  font-weight: var(--font-weight-heading);
+}
+
+.resultMeta {
+  flex-shrink: 0;
+  color: var(--search-dialog-muted);
+  font-size: var(--font-size-body-x-small);
+  line-height: var(--line-height-compact);
+}
+
+.emptyState {
+  padding: map.get(spacing.$spaces, 3.5);
+  border: map.get(sizing.$border-widths, thin) dashed
+    var(--search-dialog-border);
+  border-radius: map.get(radii.$radii, lg);
+  color: var(--search-dialog-muted);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-body);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clearButton:hover {
+    background: map.get(colors.$primary, 6);
+    color: var(--search-dialog-text);
+  }
+
+  .resultButton:hover {
+    border-color: map.get(colors.$secondary, 6);
+    background: var(--search-dialog-row-active);
+  }
+}
+
+.clearButton:active,
+.resultButton:active {
+  transform: scale(0.97);
+}
+
+.clearButton:focus-visible {
+  @include focus-ring();
+}
+
+.resultButton:focus-visible {
+  @include focus-ring($offset: -2px);
+
+  background: var(--search-dialog-row-active);
+}
+
+@include media.respond-to(tablet) {
+  .root {
+    padding: map.get(spacing.$spaces, 6);
+  }
+
+  .dialog {
+    width: 100%;
+    max-width: map.get(sizing.$sizes, content-lg);
+    max-height: min(31rem, calc(100dvh - #{map.get(spacing.$spaces, 12)}));
+  }
+
+  .searchRow {
+    min-height: calc(
+      #{map.get(sizing.$sizes, control-xl)} + #{map.get(spacing.$spaces, 5)}
+    );
+    padding-inline: map.get(spacing.$spaces, 4);
+  }
+
+  .sections {
+    padding: map.get(spacing.$spaces, 4);
+  }
+}
+
+@include media.respond-to(laptop) {
+  .root {
+    padding: map.get(spacing.$spaces, 8);
+  }
+
+  .dialog {
+    width: 100%;
+    max-width: 43rem;
+    max-height: min(38rem, calc(100dvh - #{map.get(spacing.$spaces, 16)}));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .dialog,
+  .clearButton,
+  .resultButton {
+    animation: none;
+    transition-duration: 0.01ms !important;
+  }
+
+  .clearButton:active,
+  .resultButton:active {
+    transform: none;
+  }
+}

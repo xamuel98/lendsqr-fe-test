@@ -1,0 +1,187 @@
+.field {
+  display: grid;
+  gap: var(--space-field-message);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-body);
+}
+
+.label[data-weight="medium"] {
+  font-weight: var(--font-weight-label);
+}
+
+.labelHidden {
+  @include visually-hidden();
+}
+
+.requiredMark {
+  color: var(--color-status-danger);
+}
+
+.control {
+  --field-height: var(--layout-control-height-default);
+  --field-radius: var(--radius-control-default);
+  --field-border-width: var(--border-width-control);
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--field-height);
+  padding-inline: var(--space-control-inline);
+  border: var(--field-border-width) solid var(--color-border-default);
+  border-radius: var(--field-radius);
+  background: var(--color-bg-surface);
+  transition:
+    border-color var(--duration-hover) var(--ease-hover),
+    box-shadow var(--duration-hover) var(--ease-hover),
+    background-color var(--duration-hover) var(--ease-hover);
+}
+
+.control[data-size="login"] {
+  --field-height: var(--layout-control-height-login);
+  --field-radius: var(--radius-control-login);
+  --field-border-width: var(--border-width-control-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .control[data-disabled="false"]:not(:focus-within):hover {
+    border-color: var(--color-border-strong);
+  }
+}
+
+.control:focus-within {
+  border-color: var(--color-action-primary);
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
+}
+
+.control[data-invalid="true"] {
+  border-color: var(--color-status-danger);
+}
+
+.control[data-invalid="true"]:focus-within {
+  box-shadow: 0 0 0 var(--focus-ring-width)
+    color-mix(in srgb, var(--color-status-danger) 28%, transparent);
+}
+
+.control[data-disabled="true"] {
+  opacity: 0.78;
+}
+
+.controlElement {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(var(--field-height) - (var(--field-border-width) * 2));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  outline: 0;
+}
+
+.controlElement::placeholder {
+  color: var(--color-text-muted);
+}
+
+.controlElement:-webkit-autofill,
+.controlElement:-webkit-autofill:hover,
+.controlElement:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text-primary);
+  caret-color: var(--color-text-primary);
+  box-shadow: 0 0 0 1000px var(--color-bg-surface) inset;
+}
+
+.selectElement,
+.dateElement {
+  appearance: none;
+}
+
+.dateElement::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+.affix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.affix[data-position="start"] {
+  margin-inline-end: var(--space-control-block);
+}
+
+.affix[data-position="end"] {
+  margin-inline-start: var(--space-control-block);
+}
+
+.controlAction {
+  @include minimum-touch-target(2rem);
+
+  margin-inline-start: var(--space-control-block);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-action-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-button);
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+  transition:
+    transform var(--duration-hover) var(--ease-menu),
+    color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .controlAction:hover {
+    color: var(--color-action-primary-hover);
+  }
+}
+
+.controlAction:active {
+  transform: scale(0.97);
+}
+
+.controlAction:focus-visible {
+  @include focus-ring();
+}
+
+.messageStack {
+  display: grid;
+  gap: var(--space-field-message);
+}
+
+.helperText,
+.errorMessage {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-compact);
+}
+
+.helperText {
+  color: var(--color-text-muted);
+}
+
+.errorMessage {
+  color: var(--color-status-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control,
+  .controlAction {
+    transition-duration: 0.01ms !important;
+  }
+
+  .controlAction:active {
+    transform: none;
+  }
+}

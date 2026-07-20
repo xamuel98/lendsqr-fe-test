@@ -1,0 +1,91 @@
+@use "sass:map";
+
+@use "@styles/abstracts/functions" as fn;
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+
+.layout {
+  --layout-header-height: 4.5rem;
+
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-bg-surface-secondary) 88%, white);
+
+  @include respond-to(laptop) {
+    --layout-header-height: 6.25rem;
+  }
+}
+
+.shell {
+  min-height: 0;
+  display: grid;
+  overflow: hidden;
+
+  @include respond-to(sidebar) {
+    grid-template-columns: minmax(14rem, var(--layout-sidebar-width)) minmax(
+        0,
+        1fr
+      );
+  }
+}
+
+.main {
+  @include container();
+
+  width: 100%;
+  min-height: 0;
+  padding-block: fluid-size(32, 40, 20rem, 48rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-block: contain;
+  -webkit-overflow-scrolling: touch;
+
+  @include respond-to(laptop) {
+    padding-block: var(--space-page-block-lg);
+  }
+}
+
+.organizationLoading,
+.organizationError {
+  min-height: 100%;
+  align-content: center;
+}
+
+.organizationLoading {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-control-block);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-small);
+}
+
+.organizationSpinner {
+  width: map.get(sizing.$sizes, icon-20);
+  height: map.get(sizing.$sizes, icon-20);
+  border: var(--border-width-control) solid
+    color-mix(in srgb, var(--color-action-primary) 28%, transparent);
+  border-radius: map.get(radii.$radii, circle);
+  border-top-color: var(--color-action-primary);
+  animation: organization-spin var(--duration-menu) linear infinite;
+}
+
+@keyframes organization-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .organizationSpinner {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
+
+@media (max-width: calc(#{fn.get-breakpoint(sidebar)} - 0.01rem)) {
+  .layout[data-mobile-sidebar-open="true"] .main {
+    overflow-y: hidden;
+  }
+}

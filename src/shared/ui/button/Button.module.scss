@@ -1,0 +1,154 @@
+.button {
+  --button-background: var(--color-action-primary);
+  --button-border: transparent;
+  --button-color: var(--color-text-inverse);
+  --button-interaction-background: var(--button-background);
+  --button-radius: var(--radius-control-default);
+  --button-height: var(--layout-control-height-default);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: fit-content;
+  min-height: var(--button-height);
+  padding-inline: max(var(--space-control-inline), 1rem);
+  border: var(--border-width-control) solid var(--button-border);
+  border-radius: var(--button-radius);
+  background: var(--button-background);
+  color: var(--button-color);
+  box-shadow: var(--shadow-subtle);
+  transition:
+    transform var(--duration-hover) var(--ease-menu),
+    background-color var(--duration-hover) var(--ease-hover),
+    border-color var(--duration-hover) var(--ease-hover),
+    color var(--duration-hover) var(--ease-hover),
+    box-shadow var(--duration-hover) var(--ease-hover);
+}
+
+.button[data-width="full"] {
+  width: 100%;
+}
+
+.button[data-size="login"] {
+  --button-height: var(--layout-control-height-login);
+}
+
+.button[data-color="secondary"] {
+  --button-background: var(--color-text-primary);
+}
+
+.button[data-color="danger"] {
+  --button-background: var(--color-status-danger);
+}
+
+.button[data-color="warning"] {
+  --button-background: var(--color-status-warning);
+  --button-color: var(--color-text-primary);
+}
+
+.button[data-variant="outline"] {
+  --button-background: transparent;
+  --button-border: currentColor;
+  --button-color: var(--color-action-primary);
+  --button-interaction-background: var(--color-action-primary-subtle);
+  box-shadow: none;
+}
+
+.button[data-variant="outline"][data-color="secondary"] {
+  --button-color: var(--color-text-primary);
+  --button-interaction-background: var(--color-bg-subtle);
+}
+
+.button[data-variant="outline"][data-color="danger"] {
+  --button-color: var(--color-status-danger);
+  --button-interaction-background: var(--color-status-danger-subtle);
+}
+
+.button[data-variant="outline"][data-color="warning"] {
+  --button-color: var(--color-status-warning);
+  --button-interaction-background: var(--color-status-warning-subtle);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:not(:disabled):hover {
+    background: var(--button-interaction-background);
+    box-shadow: var(--shadow-panel);
+    filter: saturate(1.04);
+  }
+}
+
+.button:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.button:focus-visible {
+  background: var(--button-interaction-background);
+
+  @include focus-ring();
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.content {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-control-block);
+}
+
+.label {
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-button);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-label);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.loadingContent {
+  visibility: hidden;
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, currentColor 28%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .spinner {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .button:not(:disabled):active {
+    transform: none;
+  }
+}

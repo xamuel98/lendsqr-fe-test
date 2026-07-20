@@ -1,0 +1,15 @@
+@use "sass:map";
+
+@use "../primitives/sizing";
+@use "../primitives/spacing";
+
+$layout-tokens: (
+  layout-sidebar-width: map.get(sizing.$sizes, sidebar),
+  layout-header-height: map.get(sizing.$sizes, header),
+  layout-content-max-width: map.get(sizing.$sizes, content-lg),
+  layout-control-height-default: map.get(sizing.$sizes, control-sm),
+  layout-control-height-login: map.get(sizing.$sizes, control-xl),
+  layout-content-gutter: map.get(spacing.$spaces, 15),
+  layout-mobile-gutter: map.get(spacing.$spaces, 4),
+  layout-table-min-width: map.get(sizing.$sizes, table-min-width)
+);

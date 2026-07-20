@@ -1,0 +1,14 @@
+@use "@styles/abstracts/functions" as fn;
+
+.page {
+  @extend %page-shell;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-body);
+  font-size: fn.fluid-size(20, 24, 20rem, 64rem);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-heading);
+}

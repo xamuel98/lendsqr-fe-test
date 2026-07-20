@@ -1,0 +1,10 @@
+@use "sass:map";
+
+@use "../primitives/sizing";
+
+$border-tokens: (
+  border-width-thin: map.get(sizing.$border-widths, thin),
+  border-width-thick: map.get(sizing.$border-widths, thick),
+  border-width-control: map.get(sizing.$border-widths, thin),
+  border-width-control-strong: map.get(sizing.$border-widths, thick)
+);

@@ -1,0 +1,485 @@
+@use "sass:map";
+
+@use "@styles/abstracts/functions" as fn;
+@use "@styles/abstracts/media";
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+
+.page {
+  @extend %page-shell;
+
+  gap: map.get(spacing.$spaces, 6);
+}
+
+.headingArea {
+  display: grid;
+  gap: map.get(spacing.$spaces, 5);
+}
+
+.headingCopy {
+  display: grid;
+  gap: map.get(spacing.$spaces, 5);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: map.get(spacing.$spaces, 3);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  text-decoration: none;
+}
+
+.backLink svg {
+  width: map.get(sizing.$sizes, icon-30);
+  height: map.get(sizing.$sizes, icon-30);
+}
+
+.backLink:focus-visible {
+  @include focus-ring();
+}
+
+.pageTitle {
+  margin: 0;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-body);
+  font-size: fn.fluid-size(20, 24, 20rem, 64rem);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-heading);
+}
+
+.actions {
+  display: grid;
+  gap: map.get(spacing.$spaces, 5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.actions > * {
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.actions .button .content .label {
+  letter-spacing: 10%;
+}
+
+.summaryCard,
+.detailsCard {
+  @extend %surface-panel;
+}
+
+.summaryCard {
+  margin-block-start: map.get(spacing.$spaces, 2);
+  overflow: hidden;
+}
+
+.skeleton {
+  display: block;
+  border-radius: map.get(radii.$radii, sm);
+  background: var(--color-bg-subtle);
+  animation: skeleton-pulse 1.2s var(--ease-hover) infinite alternate;
+}
+
+.skeletonAction {
+  width: 10rem;
+  height: 2.5rem;
+}
+
+.skeletonSummaryCard {
+  pointer-events: none;
+  margin-block-end: map.get(spacing.$spaces, 7.5);
+}
+
+.skeletonAvatar {
+  display: block;
+  width: 6.25rem;
+  height: 6.25rem;
+  flex: 0 0 auto;
+  border-radius: map.get(radii.$radii, circle);
+  background: var(--color-bg-subtle);
+  animation: skeleton-pulse 1.2s var(--ease-hover) infinite alternate;
+}
+
+.skeletonIdentityCopy,
+.skeletonMetric,
+.skeletonField {
+  display: grid;
+  align-content: center;
+  gap: map.get(spacing.$spaces, 2.5);
+}
+
+.skeletonLine {
+  width: 8rem;
+  height: var(--font-size-body);
+}
+
+.skeletonIdentityCopy .skeletonLine:last-child,
+.skeletonShortLine {
+  width: 5rem;
+  height: var(--font-size-caption);
+}
+
+.skeletonStars {
+  width: 4.5rem;
+  height: var(--font-size-body);
+}
+
+.skeletonTab {
+  width: 8rem;
+  height: var(--font-size-body-small);
+  margin: map.get(spacing.$spaces, 4) auto;
+}
+
+.skeletonSectionTitle {
+  width: 10rem;
+  height: var(--font-size-body);
+}
+
+.skeletonLabel {
+  width: 5rem;
+  height: var(--font-size-caption);
+}
+
+.skeletonValue {
+  width: 75%;
+  height: var(--font-size-body);
+}
+
+@keyframes skeleton-pulse {
+  to {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton,
+  .skeletonAvatar {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+.summaryContent {
+  display: flex;
+  flex-direction: column;
+  gap: map.get(spacing.$spaces, 5);
+  padding: map.get(spacing.$spaces, 5);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: map.get(spacing.$spaces, 5);
+}
+
+.avatar {
+  display: inline-flex;
+  width: 6.25rem;
+  height: 6.25rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: map.get(radii.$radii, circle);
+  background: var(--color-border-strong);
+  color: var(--color-text-heading);
+}
+
+.avatar svg {
+  width: map.get(sizing.$sizes, icon-40);
+  height: map.get(sizing.$sizes, icon-40);
+}
+
+.identity h2,
+.identity p,
+.summaryMetric p,
+.summaryMetric strong {
+  margin: 0;
+}
+
+.identity h2 {
+  color: var(--color-text-heading);
+  font-size: 1.375rem;
+  font-weight: var(--font-weight-label);
+}
+
+.identity p {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-x-small);
+}
+
+.identity p {
+  margin-block-start: map.get(spacing.$spaces, 2);
+}
+
+.summaryMetric {
+  display: grid;
+  align-content: center;
+  gap: map.get(spacing.$spaces, 3);
+  min-height: 4rem;
+}
+
+.summaryMetric strong {
+  color: var(--color-text-heading);
+  font-size: 1.375rem;
+  font-weight: var(--font-weight-label);
+}
+
+.summaryMetric {
+  &.userTier p {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-body-x-small);
+    font-weight: var(--font-weight-label);
+  }
+
+  p {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-caption);
+  }
+}
+
+.summaryMetric .tierStars {
+  display: inline-flex;
+  gap: map.get(spacing.$spaces, 1);
+  color: var(--color-status-warning);
+  font-size: var(--font-size-body);
+  line-height: 1;
+}
+
+.tabScroller {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.tabs {
+  display: flex;
+  min-width: max-content;
+}
+
+.tab {
+  position: relative;
+  min-height: 3.5rem;
+  padding-inline: map.get(spacing.$spaces, 5);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-compact);
+  white-space: nowrap;
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--color-action-primary);
+}
+
+.tab[aria-selected="true"]::after {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: var(--border-width-control-strong);
+  background: currentColor;
+  content: "";
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backLink:hover {
+    color: var(--color-text-heading);
+  }
+
+  .tab:hover {
+    color: var(--color-text-heading);
+  }
+}
+
+.tab:focus-visible {
+  @include focus-ring($offset: -3px);
+}
+
+.detailsCard {
+  padding: map.get(spacing.$spaces, 5);
+}
+
+.detailSection {
+  display: grid;
+  gap: map.get(spacing.$spaces, 7.5);
+  padding-block: map.get(spacing.$spaces, 6);
+}
+
+.detailSection:first-child {
+  padding-block-start: 0;
+}
+
+.detailSection + .detailSection {
+  border-top: var(--border-width-thin) solid var(--color-border-default);
+}
+
+.detailSection h2 {
+  margin: 0;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-heading);
+}
+
+.fieldGrid {
+  display: grid;
+  gap: map.get(spacing.$spaces, 7.5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  gap: map.get(spacing.$spaces, 2);
+  min-width: 0;
+}
+
+.field dt {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-compact);
+  text-transform: uppercase;
+}
+
+.field dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-label);
+}
+
+.fieldLink {
+  color: var(--color-action-primary-hover);
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width-thin);
+  text-underline-offset: 0.2em;
+}
+
+.fieldLink:focus-visible {
+  @include focus-ring();
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fieldLink:hover {
+    color: var(--color-text-heading);
+  }
+}
+
+.guarantorList {
+  display: grid;
+}
+
+.guarantor + .guarantor {
+  margin-block-start: map.get(spacing.$spaces, 6);
+  padding-block-start: map.get(spacing.$spaces, 6);
+  border-top: var(--border-width-thin) solid var(--color-border-default);
+}
+
+.emptyState {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.tabEmptyState {
+  min-height: 12rem;
+  align-content: center;
+}
+
+@include media.respond-to(tablet) {
+  .headingArea {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .actions {
+    display: flex;
+  }
+
+  .actions > * {
+    width: auto;
+  }
+
+  .summaryContent {
+    align-items: center;
+    flex-flow: row wrap;
+    gap: map.get(spacing.$spaces, 7.5);
+    padding: map.get(spacing.$spaces, 6);
+  }
+
+  .skeletonAction {
+    align-self: end;
+  }
+
+  .userTier {
+    flex-basis: 7rem;
+  }
+
+  .summaryMetric {
+    &.userTier {
+      padding-block: 17.75px;
+    }
+
+    padding-block: 15px;
+    padding-inline-start: map.get(spacing.$spaces, 5);
+    border-inline-start: var(--border-width-thin) solid
+      var(--color-border-secondary);
+  }
+
+  .tabs {
+    min-width: 100%;
+    padding-inline: map.get(spacing.$spaces, 7.5);
+  }
+
+  .tab {
+    display: inline-flex;
+    flex: 1 0 10rem;
+    justify-content: center;
+    align-items: end;
+    padding-inline: map.get(spacing.$spaces, 4);
+    padding-block-end: map.get(spacing.$spaces, 2.5);
+  }
+
+  .detailsCard {
+    padding: map.get(spacing.$spaces, 6);
+  }
+
+  .fieldGrid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  }
+}
+
+@include media.respond-to(laptop) {
+  .page {
+    gap: map.get(spacing.$spaces, 7.5);
+  }
+
+  .summaryContent,
+  .detailsCard {
+    padding: map.get(spacing.$spaces, 7.5);
+  }
+
+  .summaryContent {
+    padding-block-end: map.get(spacing.$spaces, 6);
+  }
+
+  .detailSection {
+    padding-block: map.get(spacing.$spaces, 7.5);
+  }
+}
+
+@include media.respond-to(desktop) {
+  .fieldGrid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  }
+}

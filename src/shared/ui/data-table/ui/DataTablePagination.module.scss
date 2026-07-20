@@ -1,0 +1,169 @@
+@use "sass:map";
+
+@use "@styles/abstracts/functions" as fn;
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: map.get(spacing.$spaces, 4);
+  min-width: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-compact);
+
+  @media (max-width: calc(#{fn.get-breakpoint(tablet)} - 0.01rem)) {
+    display: grid;
+    justify-content: center;
+  }
+}
+
+.summary,
+.controls {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.summary {
+  gap: map.get(spacing.$spaces, 2);
+  white-space: nowrap;
+
+  @media (max-width: calc(#{fn.get-breakpoint(mobile)} - 0.01rem)) {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.controls {
+  gap: map.get(spacing.$spaces, 2);
+  margin-inline-start: auto;
+
+  @media (max-width: calc(#{fn.get-breakpoint(tablet)} - 0.01rem)) {
+    max-width: 100%;
+    justify-content: center;
+    margin-inline-start: 0;
+    padding-block-end: map.get(spacing.$spaces, 1);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-text-secondary) 22%, white)
+      transparent;
+  }
+}
+
+.controls::-webkit-scrollbar {
+  height: map.get(spacing.$spaces, 1.5);
+}
+
+.controls::-webkit-scrollbar-thumb {
+  border-radius: map.get(radii.$radii, pill);
+  background: color-mix(in srgb, var(--color-text-secondary) 22%, white);
+}
+
+.selectWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pageSizeSelect {
+  appearance: none;
+  min-width: 6.125rem;
+  min-height: map.get(sizing.$sizes, control-sm);
+  padding: 0 map.get(spacing.$spaces, 6) 0 map.get(spacing.$spaces, 3);
+  border: 0;
+  border-radius: map.get(radii.$radii, lg);
+  background: var(--color-border-default);
+  color: var(--color-text-heading);
+  cursor: pointer;
+  font: inherit;
+  font-weight: var(--font-weight-button);
+}
+
+.pageSizeSelect:focus-visible,
+.pageButton:focus-visible,
+.arrowButton:focus-visible {
+  @include focus-ring();
+}
+
+.pageSizeSelect:disabled,
+.pageButton:disabled,
+.arrowButton:disabled {
+  cursor: not-allowed;
+}
+
+.selectIcon {
+  position: absolute;
+  inset-inline-end: map.get(spacing.$spaces, 3);
+  width: map.get(sizing.$sizes, icon-14);
+  height: map.get(sizing.$sizes, icon-14);
+  pointer-events: none;
+}
+
+.pageButton,
+.arrowButton {
+  @include minimum-touch-target(2rem);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: map.get(radii.$radii, lg);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    background-color var(--duration-hover) var(--ease-hover),
+    color var(--duration-hover) var(--ease-hover);
+}
+
+.arrowButton {
+  background: var(--color-border-default);
+}
+
+.arrowIcon {
+  width: map.get(sizing.$sizes, icon-14);
+  height: map.get(sizing.$sizes, icon-14);
+  opacity: 1;
+}
+
+.arrowButton:disabled .arrowIcon {
+  opacity: 0.6;
+}
+
+.pageButton[data-current="true"] {
+  color: var(--color-text-heading);
+  font-weight: var(--font-weight-button);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageButton:not(:disabled):hover,
+  .arrowButton:not(:disabled):hover {
+    background: var(--color-bg-subtle);
+    color: var(--color-text-heading);
+  }
+}
+
+.ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: calc(#{fn.get-breakpoint(mobile)} - 0.01rem)) {
+  .controls {
+    justify-content: space-between;
+  }
+
+  .pageButton:not([data-current="true"]):not([data-edge="true"]) {
+    display: none;
+  }
+}

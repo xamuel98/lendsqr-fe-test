@@ -1,0 +1,21 @@
+@use "sass:map";
+
+@use "@styles/tokens/primitives/spacing";
+
+.form {
+  display: grid;
+  gap: map.get(spacing.$spaces, 4);
+  padding: map.get(spacing.$spaces, 5);
+}
+
+.fields {
+  display: grid;
+  gap: map.get(spacing.$spaces, 3.5);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: map.get(spacing.$spaces, 3);
+  padding-top: map.get(spacing.$spaces, 2);
+}

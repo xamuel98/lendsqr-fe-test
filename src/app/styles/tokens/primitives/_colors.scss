@@ -1,0 +1,92 @@
+@use "sass:map";
+
+$white: #ffffff;
+$black: #000000;
+$transparent: transparent;
+
+$primary: (
+  100: #39cdcc,
+  6: rgba(#39cdcc, 0.06)
+);
+
+$secondary: (
+  100: #213f7d,
+  60: rgba(#213f7d, 0.6),
+  20: rgba(#213f7d, 0.2),
+  16: rgba(#213f7d, 0.16),
+  10: rgba(#213f7d, 0.1),
+  6: rgba(#213f7d, 0.06)
+);
+
+$neutral: (
+  100: #545f7d,
+  70: rgba(#545f7d, 0.7),
+  60: rgba(#545f7d, 0.6),
+  20: rgba(#545f7d, 0.2),
+  15: rgba(#545f7d, 0.15),
+  14: rgba(#545f7d, 0.14),
+  6: rgba(#545f7d, 0.06)
+);
+
+$ink: (
+  80: rgba(#000000, 0.8)
+);
+
+$surfaces: (
+  dashboard-background: #fbfbfb
+);
+
+$magenta: (
+  100: #df18ff,
+  10: rgba(#df18ff, 0.1)
+);
+
+$purple: (
+  100: #5718ff,
+  10: rgba(#5718ff, 0.1)
+);
+
+$orange: (
+  100: #f55f44,
+  10: rgba(#f55f44, 0.1)
+);
+
+$pink: (
+  100: #ff3366,
+  10: rgba(#ff3366, 0.1)
+);
+
+$yellow: (
+  100: #e9b200,
+  10: rgba(#e9b200, 0.1)
+);
+
+$green: (
+  100: #39cd62,
+  6: rgba(#39cd62, 0.06)
+);
+
+$red: (
+  100: #e4033b,
+  10: rgba(#e4033b, 0.1)
+);
+
+$success: (
+  100: map.get($green, 6),
+  500: map.get($green, 100)
+);
+
+$warning: (
+  100: map.get($yellow, 10),
+  500: map.get($yellow, 100)
+);
+
+$danger: (
+  100: map.get($red, 10),
+  500: map.get($red, 100)
+);
+
+$info: (
+  100: map.get($purple, 10),
+  500: map.get($purple, 100)
+);

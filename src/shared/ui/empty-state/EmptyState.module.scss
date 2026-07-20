@@ -1,0 +1,38 @@
+@use "sass:map";
+
+@use "@styles/tokens/primitives/spacing";
+
+.content {
+  display: grid;
+  justify-items: center;
+  gap: map.get(spacing.$spaces, 3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-small);
+  text-align: center;
+}
+
+.message {
+  margin: 0;
+}
+
+.action {
+  display: inline-flex;
+}
+
+.image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.errorIcon {
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--color-status-danger);
+}
+
+.errorIcon :global(svg) {
+  width: 100%;
+  height: 100%;
+}

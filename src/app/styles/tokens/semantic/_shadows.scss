@@ -1,0 +1,9 @@
+@use "sass:map";
+
+@use "../primitives/shadows";
+
+$shadow-tokens: (
+  shadow-panel: map.get(shadows.$shadows, soft-depth),
+  shadow-floating: map.get(shadows.$shadows, ambient-depth),
+  shadow-subtle: map.get(shadows.$shadows, subtle-offset)
+);

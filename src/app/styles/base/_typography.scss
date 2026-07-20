@@ -1,0 +1,38 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+h1 {
+  font-size: var(--font-size-page-heading);
+  line-height: var(--line-height-heading);
+}
+
+h2 {
+  font-size: var(--font-size-section-heading);
+  line-height: var(--line-height-heading);
+}
+
+h3 {
+  font-size: var(--font-size-card-heading);
+  line-height: var(--line-height-compact);
+}
+
+p {
+  max-width: 68ch;
+  color: var(--color-text-secondary);
+}
+
+code {
+  padding-inline: 0.35em;
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, var(--color-bg-subtle) 88%, white);
+  font-family: var(--font-family-body);
+  font-size: 0.95em;
+}

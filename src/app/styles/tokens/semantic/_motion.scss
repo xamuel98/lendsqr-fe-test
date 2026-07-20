@@ -1,0 +1,16 @@
+@use "sass:map";
+
+@use "../primitives/motion";
+
+$motion-tokens: (
+  duration-hover: map.get(motion.$durations, fast),
+  duration-menu: map.get(motion.$durations, normal),
+  duration-drawer: map.get(motion.$durations, slow),
+  duration-modal: map.get(motion.$durations, deliberate),
+  duration-page-transition: map.get(motion.$durations, normal),
+  ease-hover: map.get(motion.$easings, standard),
+  ease-menu: map.get(motion.$easings, emphasized),
+  ease-drawer: map.get(motion.$easings, drawer),
+  ease-modal-enter: map.get(motion.$easings, enter),
+  ease-modal-exit: map.get(motion.$easings, exit)
+);

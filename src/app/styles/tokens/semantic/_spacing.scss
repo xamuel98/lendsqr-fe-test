@@ -1,0 +1,22 @@
+@use "sass:map";
+
+@use "../primitives/spacing";
+
+$spacing-tokens: (
+  space-page-inline: map.get(spacing.$spaces, 7.5),
+  space-page-block: map.get(spacing.$spaces, 8),
+  space-page-block-lg: map.get(spacing.$spaces, 15),
+  space-section: map.get(spacing.$spaces, 6),
+  space-card: map.get(spacing.$spaces, 5),
+  space-form-section: map.get(spacing.$spaces, 15),
+  space-form-stack: map.get(spacing.$spaces, 5),
+  space-control-inline: map.get(spacing.$spaces, 4),
+  space-control-block: map.get(spacing.$spaces, 3),
+  space-field: map.get(spacing.$spaces, 4),
+  space-field-label: map.get(spacing.$spaces, 2.5),
+  space-field-message: map.get(spacing.$spaces, 1.5),
+  space-table-cell-inline: map.get(spacing.$spaces, 4),
+  space-table-cell-block: map.get(spacing.$spaces, 3),
+  space-navigation: map.get(spacing.$spaces, 3),
+  space-navigation-inline: map.get(spacing.$spaces, 7.5)
+);

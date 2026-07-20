@@ -1,0 +1,49 @@
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+
+@use "../tokens/primitives/breakpoints" as breakpoints;
+@use "../tokens/primitives/z-index" as zIndexTokens;
+
+@function token($collection, $key, $label: "token") {
+  @if meta.type-of($collection) != "map" {
+    @error "#{$label} collection must be a Sass map.";
+  }
+
+  @if not map.has-key($collection, $key) {
+    @error "Unknown #{$label}: #{$key}.";
+  }
+
+  @return map.get($collection, $key);
+}
+
+@function rem($pixels, $base: 16) {
+  @if not math.is-unitless($pixels) {
+    @error "rem() expects a unitless pixel value.";
+  }
+
+  @return math.div($pixels, $base) * 1rem;
+}
+
+@function fluid-size($minimumPixels, $maximumPixels, $minimumViewport: 20rem, $maximumViewport: 90rem) {
+  @if not math.is-unitless($minimumPixels) or not math.is-unitless($maximumPixels) {
+    @error "fluid-size() expects unitless pixel values.";
+  }
+
+  $minRem: rem($minimumPixels);
+  $maxRem: rem($maximumPixels);
+  $viewportRange: $maximumViewport - $minimumViewport;
+  $sizeRange: $maxRem - $minRem;
+  $slope: math.div($sizeRange, $viewportRange);
+  $intercept: $minRem - ($slope * $minimumViewport);
+
+  @return clamp($minRem, $intercept + ($slope * 100vw), $maxRem);
+}
+
+@function get-breakpoint($name) {
+  @return token(breakpoints.$breakpoints, $name, "breakpoint");
+}
+
+@function z-index($name) {
+  @return token(zIndexTokens.$z-indexes, $name, "z-index");
+}

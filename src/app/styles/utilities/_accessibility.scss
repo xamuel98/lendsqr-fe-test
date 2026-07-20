@@ -1,0 +1,26 @@
+@use "../abstracts" as *;
+
+.visually-hidden {
+  @include visually-hidden();
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-control-block);
+  left: var(--space-control-inline);
+  z-index: 999;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
+  transform: translateY(calc(-100% - var(--space-control-block)));
+  transition:
+    transform var(--duration-hover) var(--ease-hover),
+    opacity var(--duration-hover) var(--ease-hover);
+  opacity: 0;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+}

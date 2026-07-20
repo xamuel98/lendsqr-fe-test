@@ -1,0 +1,151 @@
+@use "sass:map";
+
+@use "@styles/tokens/primitives/colors";
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+@use "@styles/tokens/primitives/z-index";
+
+.root {
+  position: fixed;
+  z-index: map.get(z-index.$z-indexes, modal);
+  inset: 0;
+  display: grid;
+  align-items: start;
+  justify-items: center;
+  padding: map.get(spacing.$spaces, 4);
+  padding-block-start: map.get(spacing.$spaces, 8);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: map.get(colors.$ink, 80);
+  cursor: default;
+  animation: overlay-enter var(--duration-hover) var(--ease-hover) both;
+}
+
+.dialog {
+  position: relative;
+  width: min(100%, 28rem);
+  overflow: hidden;
+  border: map.get(sizing.$border-widths, thin) solid var(--color-border-default);
+  border-radius: map.get(radii.$radii, lg);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-floating);
+  animation: dialog-enter var(--duration-menu) var(--ease-menu) both;
+}
+
+.title,
+.description {
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: map.get(spacing.$spaces, 4);
+  min-height: map.get(sizing.$sizes, control-xl);
+  padding-block: map.get(spacing.$spaces, 3);
+  padding-inline: map.get(spacing.$spaces, 6);
+  background: var(--color-bg-subtle);
+}
+
+.title {
+  color: var(--color-text-heading);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body-large);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+}
+
+.closeButton {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: map.get(sizing.$sizes, control-sm);
+  height: map.get(sizing.$sizes, control-sm);
+  padding: 0;
+  border: 0;
+  border-radius: map.get(radii.$radii, circle);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+
+  svg {
+    width: map.get(sizing.$sizes, icon-20);
+    height: map.get(sizing.$sizes, icon-20);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--color-bg-surface);
+      color: var(--color-text-heading);
+    }
+  }
+
+  &:focus-visible {
+    @include focus-ring();
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.content {
+  padding: map.get(spacing.$spaces, 6);
+}
+
+.description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+
+  strong {
+    color: var(--color-text-heading);
+    font-weight: var(--font-weight-heading);
+  }
+}
+
+.actions {
+  padding: map.get(spacing.$spaces, 5) map.get(spacing.$spaces, 6);
+  border-top: map.get(sizing.$border-widths, thin) solid
+    var(--color-border-default);
+}
+
+.confirmButton {
+  text-transform: uppercase;
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(map.get(spacing.$spaces, 2)) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes overlay-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .overlay {
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,13 @@
+@use "sass:map";
+
+@use "../primitives/radii";
+@use "../primitives/sizing";
+
+$surface-tokens: (
+  opacity-backdrop: map.get(sizing.$opacities, 64),
+  radius-panel: map.get(radii.$radii, sm),
+  radius-control: map.get(radii.$radii, lg),
+  radius-control-default: map.get(radii.$radii, lg),
+  radius-control-login: map.get(radii.$radii, md),
+  radius-pill: map.get(radii.$radii, pill)
+);

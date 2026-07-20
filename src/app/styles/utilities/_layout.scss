@@ -1,0 +1,10 @@
+@use "../abstracts" as *;
+
+.container {
+  @include container();
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-section);
+}

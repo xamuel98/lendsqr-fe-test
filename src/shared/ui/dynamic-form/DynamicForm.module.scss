@@ -1,0 +1,29 @@
+.form {
+  display: grid;
+  gap: var(--space-form-stack);
+}
+
+.fields {
+  display: grid;
+  gap: var(--space-form-stack);
+}
+
+.submitBlock {
+  display: grid;
+  gap: var(--space-form-stack);
+}
+
+.beforeSubmit,
+.afterSubmit {
+  display: grid;
+  gap: var(--space-control-block);
+}
+
+.formError {
+  @extend %surface-panel;
+
+  padding: var(--space-control-inline);
+  color: var(--color-status-danger);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-compact);
+}

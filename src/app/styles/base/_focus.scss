@@ -1,0 +1,6 @@
+@use "../abstracts" as *;
+
+:where(a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])):focus-visible {
+  @include focus-ring();
+  scroll-margin-top: 5rem;
+}

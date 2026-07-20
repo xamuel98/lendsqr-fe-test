@@ -1,0 +1,13 @@
+@use "./functions" as fn;
+
+@mixin respond-to($name) {
+  @media (min-width: fn.get-breakpoint($name)) {
+    @content;
+  }
+}
+
+@mixin respond-between($from, $to) {
+  @media (min-width: fn.get-breakpoint($from)) and (max-width: fn.get-breakpoint($to)) {
+    @content;
+  }
+}

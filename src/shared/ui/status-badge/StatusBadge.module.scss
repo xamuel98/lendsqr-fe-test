@@ -1,0 +1,36 @@
+@use "sass:map";
+
+@use "@styles/tokens/primitives/colors";
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/spacing";
+
+.badge {
+  --status-background: #{map.get(colors.$neutral, 6)};
+  --status-color: #{map.get(colors.$neutral, 100)};
+
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.875rem;
+  padding-inline: map.get(spacing.$spaces, 3);
+  border-radius: map.get(radii.$radii, pill);
+  background: var(--status-background);
+  color: var(--status-color);
+  font-size: var(--font-size-table-cell);
+  line-height: var(--line-height-compact);
+  white-space: nowrap;
+}
+
+.badge[data-tone="success"] {
+  --status-background: #{map.get(colors.$success, 100)};
+  --status-color: #{map.get(colors.$success, 500)};
+}
+
+.badge[data-tone="warning"] {
+  --status-background: #{map.get(colors.$warning, 100)};
+  --status-color: #{map.get(colors.$warning, 500)};
+}
+
+.badge[data-tone="danger"] {
+  --status-background: #{map.get(colors.$danger, 100)};
+  --status-color: #{map.get(colors.$danger, 500)};
+}

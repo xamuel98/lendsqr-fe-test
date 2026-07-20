@@ -1,0 +1,464 @@
+@use "sass:map";
+@use "@styles/tokens/primitives/spacing";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/z-index";
+
+.topNavigation {
+  position: sticky;
+  top: 0;
+  z-index: map.get(z-index.$z-indexes, sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--space-control-block);
+  min-height: var(--layout-header-height);
+  padding-inline: var(--space-card);
+  background: color-mix(in srgb, var(--color-bg-surface) 90%, white);
+  box-shadow: var(--shadow-subtle);
+}
+
+.leading,
+.trailing,
+.profileButton,
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.leading,
+.trailing {
+  flex-shrink: 0;
+}
+
+.brand {
+  text-decoration: none;
+}
+
+.logo {
+  width: auto;
+  height: 1.375rem;
+}
+
+.menuButton,
+.mobileSearchButton,
+.docsLink,
+.userName,
+.searchForm {
+  display: none;
+}
+
+.iconButton,
+.profileButton,
+.searchSubmit {
+  touch-action: manipulation;
+  transition:
+    transform var(--duration-hover) var(--ease-menu),
+    color var(--duration-hover) var(--ease-hover),
+    background-color var(--duration-hover) var(--ease-hover),
+    border-color var(--duration-hover) var(--ease-hover),
+    box-shadow var(--duration-hover) var(--ease-hover);
+}
+
+.iconButton,
+.searchSubmit {
+  @include minimum-touch-target(2.75rem);
+
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-heading);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.menuButton,
+.mobileSearchButton {
+  display: inline-flex;
+}
+
+.mobileSearchButton svg {
+  width: map.get(sizing.$sizes, icon-16);
+  height: map.get(sizing.$sizes, icon-16);
+
+  path {
+    fill: var(--color-text-heading);
+  }
+}
+
+.mobileNotificationButton svg {
+  width: map.get(sizing.$sizes, icon-20);
+  height: map.get(sizing.$sizes, icon-20);
+}
+
+.menuButton {
+  margin-inline-start: -1rem;
+
+  @include respond-to(sidebar) {
+    display: none;
+  }
+}
+
+.trailing {
+  margin-inline-start: auto;
+  gap: 0;
+}
+
+.docsLink {
+  color: var(--color-text-heading);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.profileButton {
+  gap: 0;
+  margin-inline-start: var(--space-control-block);
+  color: var(--color-text-heading);
+
+  @include respond-to(laptop) {
+    margin-inline-start: 0;
+    gap: var(--space-field-label);
+  }
+}
+
+.profileMenu {
+  z-index: map.get(z-index.$z-indexes, popover);
+  min-width: min(
+    #{map.get(sizing.$sizes, dropdown-menu)},
+    calc(100vw - (var(--space-section) * 2))
+  );
+}
+
+.notificationMenu {
+  z-index: map.get(z-index.$z-indexes, popover);
+  min-width: min(
+    #{map.get(sizing.$sizes, dropdown-menu)},
+    calc(100vw - (var(--space-section) * 2))
+  );
+}
+
+.notificationEmpty {
+  display: grid;
+  justify-items: center;
+  gap: map.get(spacing.$spaces, 2);
+  padding: map.get(spacing.$spaces, 5) map.get(spacing.$spaces, 3);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.notificationImage {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.notificationTitle,
+.notificationDescription {
+  margin: 0;
+}
+
+.notificationTitle {
+  color: var(--color-text-heading);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-body);
+}
+
+.notificationDescription {
+  max-width: map.get(sizing.$sizes, dropdown-menu);
+  font-size: var(--font-size-body-x-small);
+  line-height: var(--line-height-body);
+}
+
+.profileMenuHeader {
+  display: grid;
+  gap: map.get(spacing.$spaces, 1);
+  padding: var(--space-control-block);
+  border-block-end: var(--border-width-thin) solid var(--color-border-default);
+  color: var(--color-text-primary);
+}
+
+.profileMenuHeader strong {
+  color: var(--color-text-heading);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-label);
+}
+
+.profileMenuHeader span {
+  overflow: hidden;
+  font-size: var(--font-size-body-x-small);
+  line-height: var(--line-height-compact);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nameWrapper {
+  @include flex-center($gap: 0.25rem);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(135deg, #f9ba60 0%, #39cdcc 100%);
+  color: var(--color-text-inverse);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-heading);
+
+  @include respond-to(laptop) {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar[data-has-image="true"] {
+  color: transparent;
+}
+
+.profileChevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userName {
+  @include truncate();
+
+  max-width: 8rem;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-body);
+}
+
+.spacingTop {
+  margin-bottom: map.get(spacing.$spaces, 1);
+}
+
+.searchLabel {
+  @include visually-hidden();
+}
+
+.searchForm {
+  flex: 1 1 auto;
+  display: none;
+  max-width: 25rem;
+  margin-inline-start: var(--space-card);
+}
+
+.searchTrigger {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(
+    (var(--layout-control-height-default) + 0.125rem) -
+      (var(--border-width-control) * 2)
+  );
+  padding-inline: 1.25rem 1.125rem;
+  border: var(--border-width-control) solid var(--color-border-strong);
+  border-inline-end-width: 0;
+  border-radius: var(--radius-control-default) 0 0 var(--radius-control-default);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-body);
+  outline: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.searchTriggerText {
+  @include truncate();
+
+  display: block;
+  width: 100%;
+  font-size: var(--font-size-body-x-small);
+}
+
+.searchTrigger[data-has-value="false"] .searchTriggerText {
+  color: var(--color-text-muted);
+}
+
+.searchSubmit {
+  width: 3.5rem;
+  height: 2.5rem;
+  min-width: 3.5rem;
+  min-height: 100%;
+  border-radius: 0 var(--radius-control-default) var(--radius-control-default) 0;
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .iconButton:hover,
+  .profileButton:hover,
+  .docsLink:hover {
+    color: var(--color-action-primary-hover);
+  }
+
+  .searchSubmit:hover {
+    background: var(--color-action-primary-hover);
+  }
+}
+
+.iconButton:active,
+.profileButton:active,
+.searchSubmit:active {
+  transform: scale(0.97);
+}
+
+.iconButton:focus-visible,
+.profileButton:focus-visible,
+.searchSubmit:focus-visible,
+.docsLink:focus-visible {
+  @include focus-ring();
+}
+
+.searchTrigger:focus-visible {
+  @include focus-ring();
+}
+
+.commandBanner {
+  display: grid;
+  gap: var(--space-control-block);
+  padding: var(--space-card);
+  border: var(--border-width-thin) solid
+    color-mix(in srgb, var(--color-action-primary) 18%, white);
+  border-radius: var(--radius-panel);
+  background: color-mix(in srgb, var(--color-action-primary) 10%, white);
+}
+
+.commandBannerEyebrow,
+.commandBannerTitle,
+.commandBannerDescription {
+  margin: 0;
+}
+
+.commandBannerEyebrow {
+  color: var(--color-action-primary-hover);
+  font-size: var(--font-size-body-x-small);
+  font-weight: var(--font-weight-label);
+  letter-spacing: var(--letter-spacing-label);
+  line-height: var(--line-height-compact);
+  text-transform: uppercase;
+}
+
+.commandBannerTitle {
+  color: var(--color-text-heading);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-card-heading);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+}
+
+.commandBannerDescription {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-body);
+}
+
+.commandBannerLink {
+  justify-self: start;
+  color: var(--color-text-heading);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-label);
+  line-height: var(--line-height-compact);
+  text-decoration: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .commandBannerLink:hover {
+    color: var(--color-action-primary-hover);
+  }
+}
+
+.commandBannerLink:focus-visible {
+  @include focus-ring();
+}
+
+@include respond-to(tablet) {
+  .topNavigation {
+    gap: var(--space-card);
+    padding-inline: var(--space-section);
+  }
+
+  .logo {
+    height: 2rem;
+  }
+
+  .trailing {
+    gap: 0;
+  }
+}
+
+@include respond-to(laptop) {
+  .mobileSearchButton {
+    display: none;
+  }
+
+  .topNavigation {
+    padding-inline: 1.875rem;
+  }
+
+  .logo {
+    height: 1.875rem;
+  }
+
+  .userName {
+    display: inline;
+  }
+
+  .searchForm {
+    display: flex;
+    align-items: stretch;
+    max-width: 25rem;
+    margin-inline-start: 9.25rem;
+  }
+
+  .trailing {
+    gap: 1.5rem;
+  }
+}
+
+@include respond-to(desktop) {
+  .docsLink {
+    display: inline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconButton,
+  .profileButton,
+  .searchSubmit,
+  .docsLink,
+  .searchForm {
+    transition-duration: 0.01ms !important;
+  }
+
+  .iconButton:active,
+  .profileButton:active,
+  .searchSubmit:active {
+    transform: none;
+  }
+}

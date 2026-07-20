@@ -1,0 +1,139 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  background: var(--color-bg-surface);
+
+  @include respond-to(laptop) {
+    display: grid;
+    gap: 0;
+    grid-template-columns: minmax(26rem, 51.2%) minmax(22rem, 48.8%);
+  }
+}
+
+.brandingPane {
+  padding-inline: var(--space-card);
+  padding-block: var(--space-card);
+
+  @include respond-to(laptop) {
+    display: grid;
+    gap: var(--space-form-section);
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    padding-inline: 6.0625rem;
+    padding-block-start: 6.625rem;
+    padding-block-end: 4rem;
+  }
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.brandLogo {
+  width: auto;
+  height: 1.75rem;
+
+  @include respond-to(laptop) {
+    height: 2.25rem;
+  }
+}
+
+.illustrationWrap {
+  display: none;
+
+  @include respond-to(laptop) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 0;
+    padding-inline-start: 1.5rem;
+  }
+}
+
+.illustration {
+  width: min(100%, 38rem);
+  height: auto;
+  object-fit: contain;
+}
+
+.formPane {
+  padding-inline: var(--space-card);
+  padding-block-start: 0;
+  padding-block-end: var(--space-section);
+
+  @include respond-to(laptop) {
+    display: grid;
+    align-items: center;
+    padding-inline: 8rem;
+    padding-block: 5rem;
+    border-inline-start: var(--border-width-thin) solid
+      var(--color-border-default);
+    box-shadow: var(--shadow-floating);
+  }
+}
+
+.formShell {
+  display: grid;
+  gap: var(--space-form-section);
+  width: min(100%, 27.9375rem);
+  margin-inline: auto;
+}
+
+.headingGroup {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+
+  @include respond-to(laptop) {
+    font-size: 2.5rem;
+  }
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  line-height: var(--line-height-body);
+
+  @include respond-to(laptop) {
+    font-size: 1.25rem;
+  }
+}
+
+.forgotPasswordLink {
+  width: fit-content;
+  color: var(--color-action-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-button);
+  letter-spacing: var(--letter-spacing-label);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.forgotPasswordSlot {
+  margin-block-end: calc(1.875rem - var(--space-form-stack));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .forgotPasswordLink:hover {
+    color: var(--color-action-primary-hover);
+  }
+}
+
+.forgotPasswordLink:focus-visible {
+  @include focus-ring();
+}

@@ -1,0 +1,39 @@
+@use "sass:map";
+@use "sass:color";
+
+@use "../primitives/colors";
+
+$color-tokens: (
+  color-bg-surface-secondary: map.get(colors.$surfaces, dashboard-background),
+  color-bg-surface: colors.$white,
+  color-bg-subtle: map.get(colors.$neutral, 6),
+  color-bg-overlay: map.get(colors.$ink, 80),
+  color-text-heading: map.get(colors.$secondary, 100),
+  color-text-primary: map.get(colors.$neutral, 100),
+  color-text-secondary: map.get(colors.$neutral, 70),
+  color-text-muted: map.get(colors.$neutral, 60),
+  color-text-inverse: colors.$white,
+  color-border-default: map.get(colors.$secondary, 6),
+  color-border-strong: map.get(colors.$secondary, 20),
+  color-border-secondary: map.get(colors.$neutral, 20),
+  color-border-muted: map.get(colors.$neutral, 14),
+  color-action-primary: map.get(colors.$primary, 100),
+  color-action-primary-hover: color.scale(
+      map.get(colors.$primary, 100),
+      $lightness: -8%
+    ),
+  color-action-primary-active: color.scale(
+      map.get(colors.$primary, 100),
+      $lightness: -14%
+    ),
+  color-action-primary-subtle: map.get(colors.$primary, 6),
+  color-focus-ring: rgba(map.get(colors.$primary, 100), 0.32),
+  color-status-success-subtle: map.get(colors.$success, 100),
+  color-status-warning-subtle: map.get(colors.$warning, 100),
+  color-status-danger-subtle: map.get(colors.$danger, 100),
+  color-status-info-subtle: map.get(colors.$info, 100),
+  color-status-success: map.get(colors.$success, 500),
+  color-status-warning: map.get(colors.$warning, 500),
+  color-status-danger: map.get(colors.$danger, 500),
+  color-status-info: map.get(colors.$info, 500)
+);

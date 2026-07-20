@@ -1,0 +1,158 @@
+@use "sass:map";
+@use "@styles/tokens/primitives/z-index";
+
+.viewport {
+  position: fixed;
+  inset-block-start: clamp(1rem, 3vw, 2rem);
+  inset-inline-end: clamp(1rem, 3vw, 2rem);
+  z-index: map.get(z-index.$z-indexes, toast);
+  display: grid;
+  gap: var(--space-control-block);
+  width: min(calc(100vw - 2rem), 24rem);
+  pointer-events: none;
+}
+
+.toast {
+  --toast-accent: var(--color-status-danger);
+  --toast-surface: color-mix(in srgb, var(--color-status-danger) 10%, white);
+
+  @extend %surface-panel;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-field-message);
+  padding: 0.5rem;
+  border-color: var(--toast-accent);
+  border-radius: var(--radius-panel);
+  background: var(--toast-surface);
+  box-shadow: var(--shadow-floating);
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--duration-menu) var(--ease-menu),
+    transform var(--duration-menu) var(--ease-menu);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+
+.toast[data-state="closing"] {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+}
+
+.toast[data-tone="success"] {
+  --toast-accent: var(--color-status-success);
+  --toast-surface: color-mix(in srgb, var(--color-status-success) 10%, white);
+}
+
+.toast[data-tone="warning"] {
+  --toast-accent: var(--color-status-warning);
+  --toast-surface: color-mix(in srgb, var(--color-status-warning) 10%, white);
+}
+
+.toast[data-tone="info"] {
+  --toast-accent: var(--color-status-info);
+  --toast-surface: color-mix(in srgb, var(--color-status-info) 10%, white);
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  color: var(--toast-accent);
+  flex-shrink: 0;
+}
+
+.iconWrap svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.body {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.toast[data-has-title="false"] {
+  align-items: center;
+}
+
+.toast[data-has-title="false"] .body {
+  align-self: center;
+}
+
+.toast[data-has-title="false"] .message {
+  line-height: var(--line-height-compact);
+}
+
+.title,
+.message {
+  margin: 0;
+}
+
+.title {
+  color: var(--color-text-heading);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-compact);
+}
+
+.message {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-body);
+}
+
+.dismissButton {
+  @include minimum-touch-target(2rem);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-inline-start: auto;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  transition:
+    transform var(--duration-hover) var(--ease-menu),
+    color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dismissButton:hover {
+    color: var(--toast-accent);
+  }
+}
+
+.dismissButton:active {
+  transform: scale(0.97);
+}
+
+.dismissButton:focus-visible {
+  @include focus-ring();
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .dismissButton {
+    transition-duration: 0.01ms !important;
+  }
+
+  .dismissButton:active {
+    transform: none;
+  }
+}

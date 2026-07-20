@@ -1,0 +1,48 @@
+@use "sass:map";
+
+@use "./borders";
+@use "./colors";
+@use "./layout";
+@use "./motion";
+@use "./shadows";
+@use "./spacing";
+@use "./surfaces";
+@use "./typography";
+
+@forward "./colors";
+@forward "./spacing";
+@forward "./typography";
+@forward "./surfaces";
+@forward "./borders";
+@forward "./shadows";
+@forward "./motion";
+@forward "./layout";
+
+$semantic-groups: (
+  colors: colors.$color-tokens,
+  spacing: spacing.$spacing-tokens,
+  typography: typography.$typography-tokens,
+  surfaces: surfaces.$surface-tokens,
+  borders: borders.$border-tokens,
+  shadows: shadows.$shadow-tokens,
+  motion: motion.$motion-tokens,
+  layout: layout.$layout-tokens
+);
+
+@mixin emit-css-variables($overrides: ()) {
+  @each $group-name, $group-values in $semantic-groups {
+    $resolved-values: $group-values;
+
+    @if map.has-key($overrides, $group-name) {
+      $resolved-values: map.merge($group-values, map.get($overrides, $group-name));
+    }
+
+    @each $token-name, $token-value in $resolved-values {
+      --#{$token-name}: #{$token-value};
+    }
+  }
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-focus-ring);
+}

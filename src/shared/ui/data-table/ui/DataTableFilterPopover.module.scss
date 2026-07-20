@@ -1,0 +1,148 @@
+@use "sass:map";
+
+@use "@styles/abstracts/functions" as fn;
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+@use "@styles/tokens/primitives/z-index";
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: map.get(z-index.$z-indexes, dropdown);
+  pointer-events: none;
+}
+
+.overlay {
+  display: none;
+}
+
+.popover {
+  position: fixed;
+  top: var(--filter-popover-top);
+  left: var(--filter-popover-left);
+  width: min(
+    #{map.get(sizing.$sizes, filter-popover)},
+    calc(100vw - #{map.get(spacing.$spaces, 8)})
+  );
+  max-height: calc(
+    100dvh - var(--filter-popover-top) - #{map.get(spacing.$spaces, 4)}
+  );
+  overflow-y: auto;
+  pointer-events: auto;
+  isolation: isolate;
+  opacity: 1;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(
+      in srgb,
+      var(--color-text-secondary) 25%,
+      transparent
+    )
+    transparent;
+  transition: opacity var(--duration-menu) var(--ease-menu);
+}
+
+.popover::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: var(--border-width-thin) solid var(--color-border-muted);
+  border-radius: map.get(radii.$radii, sm);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-subtle);
+  content: "";
+  pointer-events: none;
+  transform: translateY(0) scale(1);
+  transform-origin: var(--filter-popover-origin);
+  transition: transform var(--duration-menu) var(--ease-menu);
+
+  @starting-style {
+    transform: translateY(-0.125rem) scale(0.99);
+  }
+}
+
+.root[data-state="closing"] {
+  pointer-events: none;
+}
+
+.root[data-state="closing"] .popover {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.root[data-state="closing"] .popover::before {
+  transform: translateY(-0.125rem) scale(0.99);
+}
+
+.root[data-motion="instant"] .popover,
+.root[data-motion="instant"] .popover::before {
+  transition-duration: 0ms;
+}
+
+.popover::-webkit-scrollbar {
+  width: map.get(spacing.$spaces, 2);
+}
+
+.popover::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: map.get(radii.$radii, pill);
+  background: color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
+  background-clip: padding-box;
+}
+
+@media (max-width: calc(#{fn.get-breakpoint(mobile)} - 0.01rem)) {
+  .root {
+    display: grid;
+    place-items: center;
+    padding: map.get(spacing.$spaces, 4);
+    pointer-events: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--color-bg-overlay);
+    opacity: 0;
+    transition: opacity var(--duration-menu) var(--ease-menu);
+  }
+
+  .root[data-state="open"] .overlay {
+    opacity: 0.24;
+  }
+
+  .popover {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-height: calc(100dvh - #{map.get(spacing.$spaces, 8)});
+  }
+
+  .popover::before {
+    transform-origin: center;
+
+    @starting-style {
+      transform: scale(0.99);
+    }
+  }
+
+  .root[data-state="closing"] .popover::before {
+    transform: scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root:not([data-motion="instant"]) .popover {
+    transition: opacity var(--duration-hover) var(--ease-hover);
+  }
+
+  .root:not([data-motion="instant"]) .popover::before {
+    transform: none;
+    transition-duration: 0ms;
+  }
+}

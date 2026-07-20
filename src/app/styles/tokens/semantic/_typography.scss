@@ -1,0 +1,33 @@
+@use "sass:map";
+
+@use "../primitives/typography";
+
+$typography-tokens: (
+  font-family-body: map.get(typography.$font-families, body),
+  font-family-heading: map.get(typography.$font-families, heading),
+  font-size-display: map.get(typography.$font-sizes, display),
+  font-size-page-heading: map.get(typography.$font-sizes, page-heading),
+  font-size-section-heading: map.get(typography.$font-sizes, section-heading),
+  font-size-card-heading: map.get(typography.$font-sizes, card-heading),
+  font-size-body-large: map.get(typography.$font-sizes, body-large),
+  font-size-body: map.get(typography.$font-sizes, body),
+  font-size-body-small: map.get(typography.$font-sizes, body-small),
+  font-size-body-x-small: map.get(typography.$font-sizes, body-x-small),
+  font-size-label: map.get(typography.$font-sizes, label),
+  font-size-caption: map.get(typography.$font-sizes, caption),
+  font-size-button: map.get(typography.$font-sizes, button),
+  font-size-table-heading: map.get(typography.$font-sizes, table-heading),
+  font-size-table-cell: map.get(typography.$font-sizes, table-cell),
+  font-weight-body: map.get(typography.$font-weights, regular),
+  font-weight-heading: map.get(typography.$font-weights, semibold),
+  font-weight-label: map.get(typography.$font-weights, medium),
+  font-weight-button: map.get(typography.$font-weights, semibold),
+  line-height-display: map.get(typography.$line-heights, display),
+  line-height-heading: map.get(typography.$line-heights, heading),
+  line-height-body: map.get(typography.$line-heights, body),
+  line-height-compact: map.get(typography.$line-heights, compact),
+  letter-spacing-display: map.get(typography.$letter-spacings, display),
+  letter-spacing-heading: map.get(typography.$letter-spacings, heading),
+  letter-spacing-body: map.get(typography.$letter-spacings, body),
+  letter-spacing-label: map.get(typography.$letter-spacings, label)
+);

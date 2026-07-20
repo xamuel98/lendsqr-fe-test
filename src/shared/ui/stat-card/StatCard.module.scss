@@ -1,0 +1,153 @@
+@use "sass:map";
+@use "@styles/abstracts/functions" as fn;
+@use "@styles/tokens/primitives/colors";
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+
+.card {
+  --stat-card-accent: #{map.get(colors.$magenta, 100)};
+  --stat-card-surface: #{map.get(colors.$magenta, 10)};
+
+  display: grid;
+  gap: map.get(spacing.$spaces, 4);
+  min-width: 0;
+  min-height: 10rem;
+  padding-block: map.get(spacing.$spaces, 5) map.get(spacing.$spaces, 7.5);
+  padding-inline: map.get(spacing.$spaces, 5);
+  border: map.get(sizing.$border-widths, thin) solid var(--color-border-default);
+  border-radius: map.get(radii.$radii, sm);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-panel);
+
+  @include respond-to(laptop) {
+    padding-inline: map.get(spacing.$spaces, 7.5);
+  }
+}
+
+.card[data-tone="magenta"] {
+  --stat-card-accent: #{map.get(colors.$magenta, 100)};
+  --stat-card-surface: #{map.get(colors.$magenta, 10)};
+}
+
+.card[data-tone="purple"] {
+  --stat-card-accent: #{map.get(colors.$purple, 100)};
+  --stat-card-surface: #{map.get(colors.$purple, 10)};
+}
+
+.card[data-tone="orange"] {
+  --stat-card-accent: #{map.get(colors.$orange, 100)};
+  --stat-card-surface: #{map.get(colors.$orange, 10)};
+}
+
+.card[data-tone="pink"] {
+  --stat-card-accent: #{map.get(colors.$pink, 100)};
+  --stat-card-surface: #{map.get(colors.$pink, 10)};
+}
+
+.iconBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: map.get(radii.$radii, circle);
+  background: var(--stat-card-surface);
+  color: var(--stat-card-accent);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: map.get(sizing.$sizes, icon-20);
+  height: map.get(sizing.$sizes, icon-20);
+  flex-shrink: 0;
+}
+
+.icon :global(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  display: grid;
+  gap: map.get(spacing.$spaces, 2.5);
+  min-width: 0;
+}
+
+.title,
+.value {
+  margin: 0;
+}
+
+.title {
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  font-size: fn.fluid-size(12, 14, 20rem, 64rem);
+  font-weight: var(--font-weight-label);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--color-text-heading);
+  font-family: var(--font-family-body);
+  font-size: fn.fluid-size(16, 24, 20rem, 64rem);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: 0;
+}
+
+.meta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-x-small);
+  line-height: var(--line-height-compact);
+}
+
+.skeletonCard {
+  pointer-events: none;
+}
+
+.skeletonBadge {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: map.get(radii.$radii, circle);
+  background: var(--color-bg-subtle);
+  animation: skeleton-pulse 1.2s var(--ease-hover) infinite alternate;
+}
+
+.skeletonContent {
+  align-content: start;
+}
+
+.skeleton {
+  display: block;
+  border-radius: map.get(radii.$radii, sm);
+  background: var(--color-bg-subtle);
+  animation: skeleton-pulse 1.2s var(--ease-hover) infinite alternate;
+}
+
+.skeletonTitle {
+  width: 62%;
+  height: 0.875rem;
+}
+
+.skeletonValue {
+  width: 42%;
+  height: fn.fluid-size(16, 24, 20rem, 64rem);
+}
+
+@keyframes skeleton-pulse {
+  to {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton,
+  .skeletonBadge {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

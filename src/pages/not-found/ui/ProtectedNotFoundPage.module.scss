@@ -1,0 +1,99 @@
+@use "@styles/abstracts/functions" as fn;
+
+.page {
+  @extend %page-shell;
+
+  min-block-size: 60vh;
+  place-items: center;
+}
+
+.content {
+  display: grid;
+  justify-items: center;
+  max-inline-size: 34rem;
+  gap: var(--space-control-block);
+  text-align: center;
+}
+
+.illustration {
+  width: fn.fluid-size(160, 256, 20rem, 64rem);
+  height: auto;
+}
+
+.code {
+  @include visually-hidden();
+
+  margin: 0;
+  color: var(--color-action-primary);
+  font-family: var(--font-family-body);
+  font-size: fn.fluid-size(64, 112, 20rem, 80rem);
+  font-weight: var(--font-weight-heading);
+  line-height: 0.9;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-body);
+  font-size: fn.fluid-size(24, 32, 20rem, 64rem);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+}
+
+.description {
+  max-inline-size: 28rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.dashboardLink {
+  @include minimum-touch-target();
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: var(--space-field-label);
+  padding-inline: var(--space-control-inline);
+  border-radius: var(--radius-control-default);
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-button);
+  letter-spacing: var(--letter-spacing-label);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background-color var(--duration-hover) var(--ease-hover),
+    transform var(--duration-hover) var(--ease-menu),
+    box-shadow var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dashboardLink:hover {
+    background: var(--color-action-primary-hover);
+    box-shadow: var(--shadow-subtle);
+  }
+}
+
+.dashboardLink:focus-visible {
+  background: var(--color-action-primary-hover);
+
+  @include focus-ring();
+}
+
+.dashboardLink:active {
+  background: var(--color-action-primary-active);
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboardLink {
+    transition-duration: 0.01ms;
+  }
+
+  .dashboardLink:active {
+    transform: none;
+  }
+}

@@ -1,0 +1,260 @@
+@use "sass:map";
+
+@use "@styles/abstracts/functions" as fn;
+@use "@styles/tokens/primitives/radii";
+@use "@styles/tokens/primitives/sizing";
+@use "@styles/tokens/primitives/spacing";
+
+.section {
+  display: grid;
+  gap: map.get(spacing.$spaces, 6);
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  .section {
+    overflow-x: clip;
+  }
+}
+
+.viewport {
+  --data-table-scroll-left: 0px;
+  --data-table-viewport-width: 100%;
+
+  width: 100%;
+  padding-block: fn.fluid-size(12, 18, 20rem, 48rem);
+  padding-inline: map.get(spacing.$spaces, 3.5);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  border: map.get(sizing.$border-widths, thin) solid var(--color-border-default);
+  border-radius: map.get(radii.$radii, lg);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-panel);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(
+      in srgb,
+      var(--color-text-secondary) 25%,
+      transparent
+    )
+    transparent;
+}
+
+.viewport:focus-visible {
+  @include focus-ring();
+}
+
+.viewport::-webkit-scrollbar {
+  height: map.get(spacing.$spaces, 2);
+}
+
+.viewport::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: map.get(radii.$radii, pill);
+  background: color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
+  background-clip: padding-box;
+}
+
+.table {
+  --data-table-row-height: 3.8125rem;
+
+  width: 100%;
+  min-width: var(--data-table-min-width);
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table th,
+.table td {
+  padding: var(--space-table-cell-block) var(--space-table-cell-inline);
+  color: var(--color-text-primary);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  height: 4rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-table-heading);
+  font-weight: var(--font-weight-button);
+  line-height: var(--line-height-compact);
+  white-space: nowrap;
+}
+
+.table td {
+  height: var(--data-table-row-height);
+  font-size: var(--font-size-table-cell);
+  line-height: var(--line-height-body);
+  overflow-wrap: anywhere;
+}
+
+.table tr:not(:last-of-type) td {
+  border-bottom: map.get(sizing.$border-widths, thin) solid
+    var(--color-border-default);
+}
+
+.table th[data-align="center"],
+.table td[data-align="center"] {
+  text-align: center;
+}
+
+.table th[data-align="right"],
+.table td[data-align="right"] {
+  text-align: right;
+}
+
+.headerButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  gap: map.get(spacing.$spaces, 2);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+  transition: color var(--duration-hover) var(--ease-hover);
+  text-transform: uppercase;
+}
+
+.headerButton[data-active="true"] {
+  color: var(--color-action-primary-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .headerButton:hover {
+    color: var(--color-text-heading);
+  }
+}
+
+.headerButton:focus-visible {
+  @include focus-ring();
+}
+
+.filterIcon {
+  width: map.get(sizing.$sizes, icon-16);
+  height: map.get(sizing.$sizes, icon-16);
+  flex-shrink: 0;
+}
+
+.row {
+  transition: background-color var(--duration-hover) var(--ease-hover);
+}
+
+.row[data-clickable="true"] {
+  cursor: pointer;
+}
+
+.row[data-selected="true"] {
+  background: var(--color-bg-subtle);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover {
+    background: var(--color-bg-subtle);
+  }
+}
+
+.row:focus-visible {
+  @include focus-ring();
+  outline-offset: -2px;
+}
+
+.actionsHeader,
+.actionsCell {
+  width: 3.75rem;
+  text-align: right !important;
+}
+
+.stateCell {
+  height: auto !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+.statePresentation {
+  position: relative;
+  min-height: calc(var(--data-table-row-height) * 7);
+  overflow: hidden;
+}
+
+.statePresentation::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--color-bg-surface) 8%,
+    color-mix(in srgb, var(--color-bg-surface) 92%, transparent) 40%,
+    color-mix(in srgb, var(--color-bg-surface) 36%, transparent) 70%,
+    transparent 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.stateSkeletonRows {
+  display: grid;
+}
+
+.stateSkeletonRow {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--data-table-empty-column-count),
+    minmax(0, 1fr)
+  );
+  align-items: center;
+  min-height: var(--data-table-row-height);
+  gap: map.get(spacing.$spaces, 4);
+  padding: var(--space-table-cell-block) var(--space-table-cell-inline);
+  border-bottom: map.get(sizing.$border-widths, thin) solid
+    var(--color-border-default);
+}
+
+.stateSkeletonBar {
+  display: block;
+  width: min(100%, 9rem);
+  height: 1rem;
+  border-radius: map.get(radii.$radii, sm);
+  background: color-mix(in srgb, var(--color-bg-subtle) 75%, white);
+}
+
+.stateOverlay {
+  position: absolute;
+  z-index: 2;
+  inset-block: 0;
+  inset-inline-start: var(--data-table-scroll-left);
+  display: grid;
+  place-items: center;
+  width: min(var(--data-table-viewport-width), 100%);
+  padding: map.get(spacing.$spaces, 5);
+}
+
+.skeleton {
+  display: block;
+  width: min(100%, 9rem);
+  height: 1rem;
+  border-radius: map.get(radii.$radii, sm);
+  background: color-mix(in srgb, var(--color-bg-subtle) 75%, white);
+  animation: pulse 1.2s var(--ease-hover) infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .headerButton,
+  .skeleton {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
