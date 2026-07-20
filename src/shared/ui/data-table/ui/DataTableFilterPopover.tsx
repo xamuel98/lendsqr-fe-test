@@ -24,6 +24,9 @@ export interface DataTableFilterPopoverProps {
 
 const viewportPadding = 16;
 const popoverWidth = 270;
+const anchorGap = 8;
+const anchorVisibilityOffset = 8;
+const mobilePopoverMediaQuery = "(max-width: 29.99rem)";
 const exitAnimationFallbackDurationMs = 220;
 
 function getTopNavigationBottom() {
@@ -32,19 +35,43 @@ function getTopNavigationBottom() {
     ?.getBoundingClientRect().bottom ?? 0;
 }
 
-function getPosition(
-  anchorElement: HTMLElement,
-  popoverElement: HTMLDivElement
-): PopoverPosition {
+function isMobilePopoverViewport() {
+  return window.matchMedia?.(mobilePopoverMediaQuery).matches ?? false;
+}
+
+function isZeroSizedTestRect(rect: DOMRect) {
+  return (
+    rect.top === 0 &&
+    rect.right === 0 &&
+    rect.bottom === 0 &&
+    rect.left === 0 &&
+    rect.width === 0 &&
+    rect.height === 0
+  );
+}
+
+function isAnchorVisible(anchorElement: HTMLElement) {
+  const rect = anchorElement.getBoundingClientRect();
+
+  if (isZeroSizedTestRect(rect)) {
+    return true;
+  }
+
+  const topBoundary = getTopNavigationBottom() + anchorVisibilityOffset;
+
+  return (
+    anchorElement.isConnected &&
+    rect.bottom > topBoundary &&
+    rect.top < window.innerHeight - viewportPadding &&
+    rect.right > viewportPadding &&
+    rect.left < window.innerWidth - viewportPadding
+  );
+}
+
+function getPosition(anchorElement: HTMLElement): PopoverPosition {
   const rect = anchorElement.getBoundingClientRect();
   const width = Math.min(popoverWidth, window.innerWidth - viewportPadding * 2);
-  const safeTop = Math.min(
-    getTopNavigationBottom() + viewportPadding,
-    window.innerHeight - viewportPadding
-  );
-  const anchoredTop = Math.max(safeTop, rect.bottom + 8);
-  const availableHeightBelow = window.innerHeight - anchoredTop - viewportPadding;
-  const shouldUseSafeTop = popoverElement.scrollHeight > availableHeightBelow;
+  const anchoredTop = rect.bottom + anchorGap;
   const left = Math.min(
     Math.max(viewportPadding, rect.left),
     window.innerWidth - width - viewportPadding
@@ -52,13 +79,11 @@ function getPosition(
 
   return {
     left,
-    top: shouldUseSafeTop ? safeTop : anchoredTop,
-    transformOrigin: shouldUseSafeTop
-      ? "center top"
-      : `${Math.min(
-          Math.max(0, rect.left + rect.width / 2 - left),
-          width
-        )}px -0.5rem`
+    top: anchoredTop,
+    transformOrigin: `${Math.min(
+      Math.max(0, rect.left + rect.width / 2 - left),
+      width
+    )}px -0.5rem`
   };
 }
 
@@ -120,9 +145,16 @@ export function DataTableFilterPopover({
     }
 
     const updatePosition = () => {
-      if (popoverRef.current) {
-        setPosition(getPosition(anchorElement, popoverRef.current));
+      if (!popoverRef.current) {
+        return;
       }
+
+      if (!isMobilePopoverViewport() && !isAnchorVisible(anchorElement)) {
+        onClose();
+        return;
+      }
+
+      setPosition(getPosition(anchorElement));
     };
 
     updatePosition();
@@ -133,7 +165,7 @@ export function DataTableFilterPopover({
       window.removeEventListener("resize", updatePosition);
       window.removeEventListener("scroll", updatePosition, true);
     };
-  }, [anchorElement, isOpen, isRendered]);
+  }, [anchorElement, isOpen, isRendered, onClose]);
 
   useEffect(() => {
     if (!isOpen) {
