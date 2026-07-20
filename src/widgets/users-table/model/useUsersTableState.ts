@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import {
+  defaultUserPageSize,
   normaliseUserFilters,
   normaliseUserPageSize,
   userPageSizes,
@@ -24,7 +25,7 @@ function getPositiveInteger(value: string | null, fallback: number) {
 }
 
 function normalisePageSize(value: string | null): UserPageSize {
-  const pageSize = getPositiveInteger(value, 100);
+  const pageSize = getPositiveInteger(value, defaultUserPageSize);
 
   return normaliseUserPageSize(pageSize);
 }
