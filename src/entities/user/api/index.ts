@@ -3,6 +3,7 @@ export { getUserDetails } from "./getUserDetails";
 export { getUserOrganizations } from "./getUserOrganizations";
 export { getUserStats } from "./getUserStats";
 export {
+  defaultUserPageSize,
   normaliseUserFilters,
   normaliseUserPageSize,
   userPageSizes,
